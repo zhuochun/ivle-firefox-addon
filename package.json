@@ -1,9 +1,15 @@
 {
-    "name": "ivle", 
-    "license": "MPL 1.1/GPL 2.0/LGPL 2.1", 
-    "author": "", 
+    "name": "nus-ivle", 
+    "license": "MPL 1.1", 
+    "author": "Wang Zhuochun", 
     "version": "0.1", 
-    "fullName": "ivle", 
+    "fullName": "NUS IVLE Add-on", 
     "id": "jid1-vjoeYnFKMzBCdA", 
-    "description": "a basic add-on"
+    "description": "An Add-on for NUS IVLE platform",
+    "preferences": [{
+        "name": "LAPI",
+        "title": "Your LAPI Key",
+        "type": "string",
+        "value": "EoiogswE3e01bgl0ufptr"
+    }]
 }
