@@ -6,6 +6,7 @@
     "fullName": "NUS IVLE Add-on", 
     "id": "jid1-vjoeYnFKMzBCdA", 
     "description": "An Add-on for NUS IVLE platform",
+    "dependencies": ["toolbarbutton", "addon-kit"],
     "preferences": [{
         "name": "LAPI",
         "title": "Your LAPI Key",
