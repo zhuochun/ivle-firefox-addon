@@ -1,5 +1,39 @@
+<!DOCTYPE HTML>
+
 <html>
-<body style="padding: 5px 10px; margin: 0; background-color: #fffff0;">
-success
-</body>
+
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>IVLE Panel</title>
+    <!-- style ignored -->
+  </head>
+
+  <body>
+
+    <div id="header">
+      Hello, <span id="user-name">User</span> - <span id="logout" onclick="logout()">Log Out</span>
+    </div>
+
+    <div id="content">
+      Something here
+    </div>
+
+<h2>myIVLE</h2>
+<b>Welcome <span id="lbl_Name"><img src="http://ivle.nus.edu.sg/images/spinner.gif" /></span></b>
+<br /><br />
+Modules you are takng this semester<br />
+<span id="lbl_Modules"><img src="http://ivle.nus.edu.sg/images/spinner.gif" /></span>
+
+<hr /><h3>Trace</h3>
+<div>Get UserName<br />
+<span id="dbg_UserInfo" />
+</div>
+<br />
+<div>Get Module Info<br />
+<span id="dbg_Modules" />
+<br />
+</div>
+    
+  </body>
+
 </html>
