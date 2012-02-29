@@ -8,6 +8,14 @@
   <title>IVLE Design Prototpe</title>
 
   <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" charset="utf-8" />
+  <script src="js/jquery-1.7.1.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="js/tabs.js" type="text/javascript" charset="utf-8"></script>
+
+  <script type="text/javascript" charset="utf-8">
+//    $(document).ready(function() {
+//      $("#user").hide();
+//    })
+  </script>
   
 </head>
 
@@ -17,6 +25,14 @@
 
   <div id="header" class="group">
 
+    <div id="user">
+      Hi, <span id="username">Test</span> | <a href="#">Logout</a>
+    </div> <!-- END user -->
+
+  </div> <!-- END header -->
+
+  <div id="tabs" class="group">
+
     <div id="nav">
       <ul>
         <li class="tab-selected">Annoucement</li>
@@ -24,15 +40,7 @@
       </ul>
     </div> <!-- END nav -->
 
-    <div id="user">
-      Hi, <span id="username">Test</span> | <a href="#">Logout</a>
-    </div> <!-- END user -->
-
-  </div> <!-- END header -->
-
-  <div id="tabs">
-
-    <div id="announcement">
+    <div id="announcement-tab" class="tab">
 
       <div class="ann-item">
 
@@ -69,10 +77,94 @@
         </div> <!-- End ann-content -->
 
       </div> <!-- END ann-item -->
-      
+
     </div> <!-- END announce -->
 
-    <div id="modules">
+    <div id="modules-tab" class="tab hide-tab group">
+
+      <div class="mod-item">
+
+        <h1>CS0001</h1>
+
+        <span class="unread mod-label">23</span>
+        <span class="undownload mod-label">3</span>
+
+        <ul>
+          <li>Workbin</li>
+          <li>Weblinks</li>
+        </ul>
+        
+      </div> <!-- END mod-item -->
+
+      <div class="mod-item">
+
+        <h1>CS0002</h1>
+
+        <span class="unread mod-label">2</span>
+        <span class="undownload mod-label">32</span>
+
+        <ul>
+          <li>Workbin</li>
+          <li>Weblinks</li>
+        </ul>
+        
+      </div> <!-- END mod-item -->
+
+      <div class="mod-item">
+
+        <h1>CS0003</h1>
+
+        <span class="unread mod-label">2</span>
+        <span class="undownload mod-label">32</span>
+
+        <ul>
+          <li>Workbin</li>
+          <li>Weblinks</li>
+        </ul>
+        
+      </div> <!-- END mod-item -->
+
+      <div class="mod-item">
+
+        <h1>CS0004</h1>
+
+        <span class="unread mod-label">2</span>
+        <span class="undownload mod-label">32</span>
+
+        <ul>
+          <li>Workbin</li>
+          <li>Weblinks</li>
+        </ul>
+        
+      </div> <!-- END mod-item -->
+
+      <div class="mod-item">
+
+        <h1>CS0004</h1>
+
+        <span class="unread mod-label">2</span>
+        <span class="undownload mod-label">32</span>
+
+        <ul>
+          <li>Workbin</li>
+          <li>Weblinks</li>
+        </ul>
+        
+      </div> <!-- END mod-item -->
+
+      <div class="mod-item">
+
+        <h1>CS0004</h1>
+
+        <span class="unread mod-label">2</span>
+        <span class="undownload mod-label">32</span>
+
+        <ul>
+          <li>Workbin</li>
+          <li>Weblinks</li>
+        </ul>
+        
+      </div> <!-- END mod-item -->
       
     </div> <!-- END modules -->
     
