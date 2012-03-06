@@ -1,3 +1,5 @@
+// To Retrieve the user token from url
+// Last Edit 06/Mar/2012 05:11 PM
 
 var search = function () {
     var p = window.location.search.substr(1).split(/\&/), l = p.length, kv, r = {};
@@ -10,6 +12,5 @@ var search = function () {
 
 if (search.token && search.token.length > 0 && search.token != 'undefined') {
     console.log(search.token);
-
     self.postMessage(search.token);
 }
