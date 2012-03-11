@@ -61,8 +61,8 @@ blockquote, blockquote q { text-indent: 15px; }
 .jp-container{ width:400px; height:500px; position:relative; }
 
 /* tabs */
-.tab { width: 370px; padding: 10px 15px; float: left; }
-.hide-tab { visibility: hidden; }
+.tab { width: 380px; padding: 10px 10px; float: left; }
+.hide-tab, .hide-item { visibility: hidden; }
 
 /* tabs - announcement */
 .ann-item { padding: 5px; margin-bottom: 10px; background: #F3EFD3; border-left: 3px solid #f0f0f0; }
@@ -72,12 +72,14 @@ blockquote, blockquote q { text-indent: 15px; }
 .ann-item h1:hover .expand { visibility: visible }
 
 /* tabs - modules */
-.mod-item { position: relative; float: left; width: 120px; height: 100px; padding: 10px; margin: 10px 25px 10px 0; background: #E5F7EA; box-shadow: 0px 2px 5px rgba(0,0,0,.1); border: 1px solid #e5f7e0; }
+.mod-item { position: relative; float: left; width: 140px; height: 100px; padding: 10px; margin: 10px 25px 10px 0; background: #E5F7EA; box-shadow: 0px 2px 5px rgba(0,0,0,.1); border: 1px solid #e5f7e0; text-align: center; }
 .mod-item:hover { background: #DEE7E0; border: 1px solid #7bb138; }
-.mod-item h1 { font-size: 32px; text-align: center; margin-top: 20px; }
-.mod-label { position: absolute; display: inline-block; width: 25px; height: 25px; padding: 5px; background: #bd0235; border: 2px solid #efefef; font-size: 18px; text-align: center; color: #fff; box-shadow: 0px 2px 5px rgba(0,0,0,.1); border-radius: 99px; }
+.mod-item h1 { font-size: 32px; padding: 0; }
+.mod-item h2 { padding: 0 0 5px 0; }
+.mod-label { position: absolute; display: inline-block; width: 25px; height: 25px; padding: 5px; background: #bd0235; border: 2px solid #efefef; font-size: 18px; line-height:25px; color: #fff; box-shadow: 0px 2px 5px rgba(0,0,0,.1); border-radius: 99px; }
 .unread { background: #bd0235; top: -13px; right: -13px; }
-.undownload { background: #345888; top: -18px; left: 60px; }
+.zero-unread { background: #888; }
+.mod-links li { display: inline-block; }
 
 /* style inputs */
 input[type="text"], input[type="password"], textarea { border: 1px solid #ddd; padding: 5px 8px 4px; -moz-border-radius: 3px; -webkit-border-radius:3px; border-radius: 3px; -moz-box-shadow: inset 0 2px 4px rgba(0,0,0,.1); -webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,.1); box-shadow: inset 0 2px 4px rgba(0,0,0,.1); -webkit-transition: all 0.5s ease-out; -moz-transition: all 0.5s ease-out; -o-transition: all 0.5s ease-out; }

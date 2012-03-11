@@ -1,5 +1,7 @@
 // To Retrieve the user token from url
-// Last Edit 06/Mar/2012 05:11 PM
+// Last Edit 11/Mar/2012 04:20 PM
+
+console.log("getting token script");
 
 var search = function () {
     var p = window.location.search.substr(1).split(/\&/), l = p.length, kv, r = {};
@@ -11,6 +13,6 @@ var search = function () {
 } ();
 
 if (search.token && search.token.length > 0 && search.token != 'undefined') {
-    self.postMessage(search.token);
     alert("You have successfully logged in. You may close this page and start using IVLE Firefox Add-on");
+    self.postMessage(search.token);
 }
