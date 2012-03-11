@@ -8,15 +8,11 @@
   <title>IVLE Design Prototpe</title>
 
   <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="css/jquery.jscrollpane.css" />
+
   <script src="js/jquery-1.7.1.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="js/tabs.js" type="text/javascript" charset="utf-8"></script>
 
-  <script type="text/javascript" charset="utf-8">
-//    $(document).ready(function() {
-//      $("#user").hide();
-//    })
-  </script>
-  
 </head>
 
 <body>
@@ -41,6 +37,8 @@
         <li>Timetable</li>
       </ul>
     </div> <!-- END nav -->
+
+    <div id="jp-container" class="jp-container">
 
     <div id="to-do-tab" class="tab hide-tab">
 
@@ -194,9 +192,18 @@
       
     </div> <!-- END modules -->
     
+    </div> <!-- END jsContainer -->
+
   </div> <!-- END tabs -->
 
 </div> <!-- END wrapper -->
+
+<!-- the mousewheel plugin -->
+<script type="text/javascript" src="js/jscrollpane/jquery.mousewheel.js"></script>
+<!-- the jScrollPane script -->
+<script type="text/javascript" src="js/jscrollpane/jquery.jscrollpane.min.js"></script>
+<script type="text/javascript" src="js/jscrollpane/scroll-startstop.events.jquery.js"></script>
+<script type="text/javascript" src="js/jscrollpane.js"></script>
   
 </body>
 

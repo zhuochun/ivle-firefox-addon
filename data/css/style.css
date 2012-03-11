@@ -57,6 +57,9 @@ blockquote, blockquote q { text-indent: 15px; }
 #nav li:hover { background: #E4EAF1; border-top-color: #7BB138; }
 #nav li.tab-selected:hover { background: #f0f0f0; border-top-color: #ff5900; }
 
+/* jpConainter */
+.jp-container{ width:400px; height:500px; position:relative; }
+
 /* tabs */
 .tab { width: 370px; padding: 10px 15px; float: left; }
 .hide-tab { visibility: hidden; }
