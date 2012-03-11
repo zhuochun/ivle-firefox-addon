@@ -72,15 +72,11 @@ blockquote, blockquote q { text-indent: 15px; }
 .ann-item h1:hover .expand { visibility: visible }
 
 /* tabs - modules */
-.mod-item { position: relative; float: left; width: 140px; height: 110px; padding: 10px; margin: 15px 15px 15px 0; background: #E5F7EA; border-radius: 9px; box-shadow: 0px 2px 5px rgba(0,0,0,.1); }
-.mod-item:hover { background: #DEE7E0 }
+.mod-item { position: relative; float: left; width: 120px; height: 100px; padding: 10px; margin: 10px 25px 10px 0; background: #E5F7EA; box-shadow: 0px 2px 5px rgba(0,0,0,.1); border: 1px solid #e5f7e0; }
+.mod-item:hover { background: #DEE7E0; border: 1px solid #7bb138; }
 .mod-item h1 { font-size: 32px; text-align: center; margin-top: 20px; }
-.mod-label { position: absolute; display: inline-block; width: 25px; height: 25px; padding: 5px; background: #bd0235; border: 2px solid #efefef; font-size: 18px; text-align: center; color: #fff;
-text-shadow: 1px 1px 0 #d8d8dc;
-box-shadow: 0px 2px 5px rgba(0,0,0,.1);
-border-radius: 99px;
-}
-.unread { background: #bd0235; top: -18px; left: 15px; }
+.mod-label { position: absolute; display: inline-block; width: 25px; height: 25px; padding: 5px; background: #bd0235; border: 2px solid #efefef; font-size: 18px; text-align: center; color: #fff; box-shadow: 0px 2px 5px rgba(0,0,0,.1); border-radius: 99px; }
+.unread { background: #bd0235; top: -13px; right: -13px; }
 .undownload { background: #345888; top: -18px; left: 60px; }
 
 /* style inputs */
