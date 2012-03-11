@@ -20,6 +20,7 @@ $(document).ready(function() {
     }
   });
 
+/*
   $(".ann-item").click(function() {
     if ( $(this).hasClass("ann-selected") ) {
       $(this).removeClass("ann-selected");
@@ -36,4 +37,5 @@ $(document).ready(function() {
       $(".ann-content", this).slideToggle("fast");
     }
   });
+*/
 });

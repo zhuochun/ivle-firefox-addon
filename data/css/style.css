@@ -65,9 +65,10 @@ blockquote, blockquote q { text-indent: 15px; }
 .hide-tab, .hide-item { visibility: hidden; }
 
 /* tabs - announcement */
-.ann-item { padding: 5px; margin-bottom: 10px; background: #F3EFD3; border-left: 3px solid #f0f0f0; }
+.ann-item { padding: 5px 8px; margin: 0 5px 25px 0; background: #F3EFD3; border-left: 3px solid #f0f0f0; }
 .ann-item:hover { border-left-color: #7bb138; background: #D8F3E0; }
 .ann-item-alter { background: #B4C8E6; }
+.ann-item h1 { cursor: pointer; }
 .ann-item .expand { visibility: hidden; float: right; }
 .ann-item h1:hover .expand { visibility: visible }
 
