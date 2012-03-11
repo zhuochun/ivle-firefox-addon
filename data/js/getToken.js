@@ -11,6 +11,6 @@ var search = function () {
 } ();
 
 if (search.token && search.token.length > 0 && search.token != 'undefined') {
-    console.log(search.token);
     self.postMessage(search.token);
+    alert("You have successfully logged in. You may close this page and start using IVLE Firefox Add-on");
 }
