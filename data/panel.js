@@ -1,5 +1,5 @@
 function setUserName(json) {
-    console.log(json);
+    jQuery('#username').html(json);
 }
 
 self.port.on("userName", setUserName);

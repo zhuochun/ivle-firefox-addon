@@ -6,15 +6,16 @@ $(document).ready(function() {
 
   $("#nav li").click(function() {
     if ( !$(this).hasClass("tab-selected") ) {
-      $("#user").show();
+      var oldTab = $("#nav li.tab-selected").html().toLowerCase();
+      var newTab = $(this).html().toLowerCase();
 
       $("#nav li").removeClass("tab-selected");
       $(this).addClass("tab-selected");
 
-      $(".hide-tab").show();
-      $("#announcement-tab").toggleClass("hide-tab");
-      $("#modules-tab").toggleClass("hide-tab");
-      $(".hide-tab").hide();
+      $("#" + newTab + "-tab").toggleClass("hide-tab");
+      $("#" + oldTab + "-tab").toggleClass("hide-tab");
+      $("#" + newTab + "-tab").show();
+      $("#" + oldTab + "-tab").hide();
     }
   });
 });

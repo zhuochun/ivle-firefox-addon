@@ -1,3 +1,15 @@
+/* Define font */
+@font-face {
+    font-family: 'BebasNeueRegular';
+    src: url('fonts/BebasNeue-webfont.eot');
+    src: url('fonts/BebasNeue-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/BebasNeue-webfont.woff') format('woff'),
+         url('fonts/BebasNeue-webfont.ttf') format('truetype'),
+         url('fonts/BebasNeue-webfont.svg#BebasNeueRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* Reset to Default Styles */
 html, body, div, span, applet, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, menu { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; }
 ol, ul { list-style-type: none; }
@@ -15,8 +27,8 @@ a:hover, a:active { text-decoration: none; color: #bd0235; }
 /* setting starts here */
 html, body { font-family: Arial, Helvetica, Sans-serif; font-weight: normal; font-size: 12px; color: #555555; background: #f0f0f0; cursor: default; }
 /* general settings */
-h1, h2, h3, h4, h5, h6 { font-family: Georgia, "Times New Roman", "Microsoft YaHei", serif; padding: 0 0 10px; color: #333; }
-h1 {font-size: 16px;} h2 {font-size: 16px;} h3 {font-size: 16px;}
+h1, h2, h3, h4, h5, h6 { font-family: 'BebasNeueRegular', Georgia, "Times New Roman", "Microsoft YaHei", serif; padding: 0 0 10px; color: #333; }
+h1 {font-size: 18px;} h2 {font-size: 16px;} h3 {font-size: 16px;}
 h4 {font-size: 18px;} h5 {font-size: 14px;} h6 {font-size: 12px;}
 strong { font-weight: bold; color: #333; }
 em, cite { font-style: italic; color: #888; }
@@ -28,27 +40,22 @@ blockquote, blockquote q { text-indent: 15px; }
 
 /* containers */
 #wrapper { overflow-x: hidden; }
-#header { height: 20px; padding: 5px 10px; line-height: 20px; }
-#tabs { margin-top: 12px; border-top: 2px solid #A8A7A8; }
+#header { height: 15px; padding: 5px 10px; line-height: 15px; background: #444; }
+#tabs { margin-top: 33px; border-top: 2px solid #A8A7A8; }
 
 /* header */
 #header a { color: #eee; text-decoration: underline; padding: 3px; }
 #header a:hover { color: #345888; background: #f0f0f0; text-decoration: none; }
 /* header - user */
-#user { margin-top: -5px; padding: 5px 8px; background: #444; color: #fff;
-border-radius: 0 0 6px 6px; }
+#user { float: right; margin-top: -5px; padding: 5px 8px; color: #eee; }
 #username { padding: 3px; }
 
 /* tabs - nav */
 #nav { margin: -29px 10px 0 10px; }
-#nav li { display: inline-block; padding: 5px; margin-right: 5px; background: #d6dfed; border: 1px solid #d6dfed; cursor: pointer;
-border-top: 2px solid #d6dfed;
-border-bottom: 2px solid #A8A7A8;
-border-radius: 6px 6px 0 0;}
+#nav li { display: inline-block; padding: 5px; margin-right: 5px; background: #d6dfed; border: 1px solid #d6dfed; cursor: pointer; border-top: 2px solid #d6dfed; border-bottom: 2px solid #A8A7A8; border-radius: 6px 6px 0 0;}
 #nav li.tab-selected { border-color: #A8A7A8; border-top: 2px solid #FF5900; border-bottom: 2px solid #f0f0f0; background: #f0f0f0 }
 #nav li:hover { background: #E4EAF1; border-top-color: #7BB138; }
 #nav li.tab-selected:hover { background: #f0f0f0; border-top-color: #ff5900; }
-#user { float: right; }
 
 /* tabs */
 .tab { padding: 10px 15px 10px 12px; float: left; }
