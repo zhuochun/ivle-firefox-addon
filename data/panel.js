@@ -26,6 +26,12 @@ self.on("message", function(USER) {
 function setUserName(name) {
     $('#username').html(name);
     $('#user').append(' | <a href="#">Logout</a>');
+
+    // User Logout
+    $("#user a").click(function() {
+        console.log("logout");
+        self.port.emit("logout");
+    });
 }
 self.port.on("userName", setUserName);
 
@@ -58,7 +64,7 @@ function setModules(data) {
             api    : "Announcements",
             input  : {
                 CourseID  : module.ID,
-                Duration  : 20160, // 7 days
+                Duration  : 20160, // 14 days
                 TitleOnly : false
             },
             output : "announcements"
@@ -78,7 +84,7 @@ function saveAnnouncements(data) {
     for (var i = 0; i < data.Results.length; i++) {
         Announcements.data.push(data.Results[i]);
 
-        console.log(data.Results[i].Title);
+        data.Results[i].CreatedDate = new Date(parseInt(data.Results[i].CreatedDate.substr(6, 18)));
     }
 
     console.log("Announcement : " + Announcements.num + " - " + Announcements.data.length);
@@ -93,7 +99,6 @@ function setAnnouncements() {
     var annTab  = $("#announcement-tab");
     var annItem = $(".ann-item:first");
 
-    // TODO: need to convert CreatedDate from String to date
     Announcements.data.sort(function(a, b) {
         return b.CreatedDate - a.CreatedDate;
     });
@@ -104,8 +109,13 @@ function setAnnouncements() {
 
         cloneItem.find("h1").html(ann.Title);
 
-        // TODO: html tags
-        cloneItem.find(".ann-content").html(ann.Description);
+        // TODO: refractor code
+        var testStr = ann.Description.replace(/&lt;/g, "<");
+        testStr     = testStr.replace(/&gt;/g, ">");
+        testStr     = testStr.replace(/&amp;/g, "&");
+        //console.log(testStr);
+
+        cloneItem.find(".ann-content").html(testStr);
 
         annTab.append(cloneItem);
     }
@@ -129,8 +139,3 @@ function setAnnouncements() {
     }
   });
 }
-
-// User Logout
-$("#user a").click(function() {
-    self.port.emit("logout");
-});
