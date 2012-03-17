@@ -52,10 +52,15 @@ blockquote, blockquote q { text-indent: 15px; }
 
 /* tabs - nav */
 #nav { margin: -29px 10px 0 10px; }
-#nav li { display: inline-block; padding: 5px; margin-right: 5px; background: #d6dfed; border: 1px solid #d6dfed; cursor: pointer; border-top: 2px solid #d6dfed; border-bottom: 2px solid #A8A7A8; border-radius: 6px 6px 0 0;}
+#nav>ul>li { position: relative; display: inline-block; padding: 5px; margin-right: 5px; background: #d6dfed; border: 1px solid #d6dfed; cursor: pointer; border-top: 2px solid #d6dfed; border-bottom: 2px solid #A8A7A8; border-radius: 6px 6px 0 0;}
 #nav li.tab-selected { border-color: #A8A7A8; border-top: 2px solid #FF5900; border-bottom: 2px solid #f0f0f0; background: #f0f0f0 }
 #nav li:hover { background: #E4EAF1; border-top-color: #7BB138; }
-#nav li.tab-selected:hover { background: #f0f0f0; border-top-color: #ff5900; }
+#nav li.tab-selected:hover { border-bottom-color: #E4EAF1; border-top-color: #ff5900; }
+/* tabs - sub-menu */
+.sub-menu-button { display: inline-block; width: 7px; height: 7px; background: url("../img/nav_submenu_normal_open.png") top left no-repeat; }
+ul.sub-menu { position: absolute; z-index: 100; width: 100%; background: #E4EAF1; padding: 10px; top: 25px; left: 0px; }
+ul.sub-menu li { padding: 2px 0; margin: 2px 0; }
+ul.sub-menu li:hover { color: #ff5900; }
 
 /* jpConainter */
 .jp-container{ width:400px; height:500px; position:relative; }
@@ -63,9 +68,11 @@ blockquote, blockquote q { text-indent: 15px; }
 /* tabs */
 .tab { width: 380px; padding: 10px 10px; float: left; }
 .hide-tab, .hide-item { visibility: hidden; }
+#load-gif { display: block; width: 344px; height: 13px; margin: 0 auto; background: #eee url("../img/indeterminate_bar.gif") top left no-repeat; }
 
 /* tabs - announcement */
 .ann-item { padding: 5px 8px; margin: 0 5px 25px 0; background: #F3EFD3; border-left: 3px solid #f0f0f0; }
+.ann-item ul { padding: 5px 10px; }
 .ann-item:hover { border-left-color: #7bb138; background: #D8F3E0; }
 .ann-item-alter { background: #B4C8E6; }
 .ann-item h1 { cursor: pointer; }

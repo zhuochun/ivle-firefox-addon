@@ -2,13 +2,16 @@
 // Last Edit: 11/Mar/2012 11:52 AM
 
 $(document).ready(function() {
-  $(".hide-tab").hide("fast"); // hide tabs
-  $(".ann-content").slideUp("fast"); // hide ann-content
+  $(".hide-tab").hide(); // hide tabs
+  $(".sub-menu").hide(); // hide sub-menus
+  //$(".ann-content").slideUp(); // hide ann-contents
 
   $("#nav li").click(function() {
     if ( !$(this).hasClass("tab-selected") ) {
-      var oldTab = $("#nav li.tab-selected").html().toLowerCase();
-      var newTab = $(this).html().toLowerCase();
+      var oldTab = $("#nav li.tab-selected").attr("for");
+      var newTab = $(this).attr("for");
+
+      oldTab = oldTab || "load"; // in case of oldTab == null
 
       $("#nav li").removeClass("tab-selected");
       $(this).addClass("tab-selected");
@@ -19,6 +22,20 @@ $(document).ready(function() {
       $("#" + oldTab + "-tab").hide();
     }
   });
+
+  $(".sub-menu-button").click(function() {
+    var submenu = $(this).next();
+
+    $(this).parent().mouseleave(function() {
+        submenu.hide();
+    });
+
+    $(this).next().toggle();
+  });
+
+ // $(".sub-menu").mouseout(function() {
+ //   $(this).toggle();
+ // });
 
 /*
   $(".ann-item").click(function() {

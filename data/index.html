@@ -30,16 +30,25 @@
 
     <div id="nav">
       <ul>
-        <li>To-do</li>
-        <li class="tab-selected">Announcement</li>
-        <li>Modules</li>
-        <li>Timetable</li>
+        <li for="to-do">To-do</li>
+        <li for="announcement">Announcement</li>
+        <li for="modules">Modules <span class="sub-menu-button"> </span>
+          <ul class="sub-menu modules-submenu">
+          </ul>
+        </li>
+        <li for="timetable">Timetable</li>
       </ul>
     </div> <!-- END nav -->
 
     <div id="to-do-tab" class="tab hide-tab">
 
       todo list tab
+
+      <ul>
+            <li>Module 1</li>
+            <li>Module 2</li>
+            <li>Module 3</li>
+      </ul>
 
     </div> <!-- End to-do-tab -->
 
@@ -49,7 +58,7 @@
 
     </div> <!-- End timetable-tab -->
 
-    <div id="announcement-tab" class="tab">
+    <div id="announcement-tab" class="tab hide-tab">
 
       <div class="ann-item">
 
@@ -63,7 +72,7 @@
 
       </div> <!-- END ann-item -->
 
-    </div> <!-- END announce -->
+    </div> <!-- END announce-tab -->
 
     <div id="modules-tab" class="tab hide-tab group">
 
@@ -82,7 +91,15 @@
         
       </div> <!-- END mod-item -->
       
-    </div> <!-- END modules -->
+    </div> <!-- END modules-tab -->
+
+    <div id="load-tab" class="tab">
+
+      <h1>Loading ...</h1>
+
+      <span id="load-gif"></span>
+      
+    </div> <!-- END load-tab -->
     
   </div> <!-- END tabs -->
 
