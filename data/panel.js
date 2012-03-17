@@ -48,7 +48,11 @@ function setModules(data) {
         var module    = data.Results[i];
         var cloneItem = moduleItem.clone();
 
-        cloneItem.find("h1").html(module.CourseCode.substring(0, 7));
+        var moduleName = module.CourseCode.substring(0, 7);
+
+        $(".modules-submenu").append("<li>" + moduleName + "</li>");
+
+        cloneItem.find("h1").html(moduleName);
         cloneItem.find(".unread").html(module.Badge);
 
         if (module.Badge > 0) {
@@ -122,20 +126,22 @@ function setAnnouncements() {
 
     annItem.hide();
 
+    $(".ann-content").slideUp();
+
     $(".ann-item").click(function() {
         if ( $(this).hasClass("ann-selected") ) {
             $(this).removeClass("ann-selected");
-            $(".ann-content", this).slideToggle("fast");
+            $(".ann-content", this).slideToggle();
         } else {
             var oldAnnItem = $(".ann-selected");
             if (oldAnnItem) {
-              $(".ann-content", oldAnnItem).slideToggle("fast");
+              $(".ann-content", oldAnnItem).slideUp();
               oldAnnItem.removeClass("ann-selected");
         }
 
         // append class to newly selected
         $(this).addClass("ann-selected");
-        $(".ann-content", this).slideToggle("fast");
+        $(".ann-content", this).slideDown("fast");
     }
   });
 }
