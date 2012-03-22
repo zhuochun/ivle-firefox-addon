@@ -35,6 +35,15 @@ function setUserName(name) {
 }
 self.port.on("userName", setUserName);
 
+function clearLoad(status) {
+    $("#load-tab").addClass("hide-tab");
+    $("#announcement-tab").removeClass("hide-tab");
+
+    $("#load-tab").hide();
+    $("#announcement-tab").show();
+}
+//self.port.on("initialized", clearLoad);
+
 // set User modules
 function setModules(data) {
     var moduleTab  = $("#modules-tab");
@@ -50,16 +59,17 @@ function setModules(data) {
 
         var moduleName = module.CourseCode.substring(0, 7);
 
-        $(".modules-submenu").append("<li>" + moduleName + "</li>");
+        //$(".modules-submenu").append("<li for=\"" + module.ID + "\">" + moduleName + "</li>");
+        $(".modules-submenu").append("<li><a href=\"#" + module.ID + "\">" + moduleName + "</a></li>");
 
         cloneItem.find("h1").html(moduleName);
+        cloneItem.find("h2").html(module.CourseName);
+        cloneItem.find(".mod-id").html(module.ID);
         cloneItem.find(".unread").html(module.Badge);
 
         if (module.Badge > 0) {
             cloneItem.find(".unread").removeClass("zero-unread");
         }
-
-        cloneItem.find("h2").html(module.CourseName);
 
         moduleTab.append(cloneItem);
 
@@ -73,11 +83,27 @@ function setModules(data) {
             },
             output : "announcements"
         });
+
+        // get this module's workbin files
+        self.port.emit("request", {
+            api    : "Workbins",
+            input  : {
+                CourseID  : module.ID,
+                Duration  : 0,
+                TitleOnly : true
+            },
+            output : "workbin"
+        });
     }
 
     moduleItem.hide();
 }
 self.port.on("modules", setModules);
+
+function getWorkbin(data) {
+    //for (var i = 0; i < )
+}
+self.port.on("workbin", getWorkbin);
 
 // save Announcements
 function saveAnnouncements(data) {
@@ -125,6 +151,8 @@ function setAnnouncements() {
     }
 
     annItem.hide();
+
+    clearLoad();
 
     $(".ann-content").slideUp();
 
