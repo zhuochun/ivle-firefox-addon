@@ -90,7 +90,7 @@ function setModules(data) {
             input  : {
                 CourseID  : module.ID,
                 Duration  : 0,
-                TitleOnly : true
+                TitleOnly : false
             },
             output : "workbin"
         });
