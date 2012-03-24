@@ -35,15 +35,6 @@ function setUserName(name) {
 }
 self.port.on("userName", setUserName);
 
-function clearLoad(status) {
-    $("#load-tab").addClass("hide-tab");
-    $("#announcement-tab").removeClass("hide-tab");
-
-    $("#load-tab").hide();
-    $("#announcement-tab").show();
-}
-//self.port.on("initialized", clearLoad);
-
 // set User modules
 function setModules(data) {
     var moduleTab  = $("#modules-tab");
@@ -83,27 +74,99 @@ function setModules(data) {
             },
             output : "announcements"
         });
-
-        // get this module's workbin files
-        self.port.emit("request", {
-            api    : "Workbins",
-            input  : {
-                CourseID  : module.ID,
-                Duration  : 0,
-                TitleOnly : false
-            },
-            output : "workbin"
-        });
     }
 
     moduleItem.hide();
+
+    // bind module items with events
+    $(".mod-item").click(function() {
+        var mod = $(this).find(".mod-id");
+
+        if (mod) {
+            console.log("Load Module : " + mod.html());
+            // loading tab
+            showLoad();
+            // get this module's workbin files
+            self.port.emit("request", {
+                api    : "Workbins",
+                input  : {
+                    CourseID  : mod.html(),
+                    Duration  : 0,
+                    TitleOnly : false
+                },
+                output : "workbin"
+            });
+        } else {
+            console.log("error: empty module id");
+        }
+    });
 }
 self.port.on("modules", setModules);
 
-function getWorkbin(data) {
-    //for (var i = 0; i < )
+function setWorkbin(data) {
+    var workbinTab = $("#workbin-tab");
+    var folderItem = $(".folder:first");
+    var fileItem   = $(".file:first");
+
+    // TODO: cannot parse the data correctly
+    //var results = data.Results;
+
+    //console.log(results.ID);
+    //console.log(data["Results"]["Title"].length);
+
+    var folders = data.Results[0].Folders;
+
+    for (var i = 0; i < folders.length; i++) {
+        var folderClone = folderItem.clone();
+
+        folderClone.find("h2").append(folders[i].FolderName)
+
+        for (var j = 0; j < folders[i].Files.length; j++) {
+            var file      = folders[i].Files[j];
+            var fileClone = fileItem.clone();
+
+            fileClone.find(".file-type").addClass(file.FileType);
+            fileClone.find(".file-name").html(seperateFilename(file.FileName));
+            fileClone.find(".file-id").html(file.ID);
+
+            folderClone.append(fileClone);
+        }
+
+        workbinTab.append(folderClone);
+    }
+
+    folderItem.hide();
+    fileItem.hide();
+
+    clearLoad("#workbin-tab");
+
+    // add download file events to each file
 }
-self.port.on("workbin", getWorkbin);
+self.port.on("workbin", setWorkbin);
+
+function addModFolder(data) {
+}
+
+function seperateFilename(name) {
+    var result = "";
+
+    if (name.length > 13) {
+        result += name.substr(0, 13);
+        result += "<br/>";
+
+        var subname = name.substr(13);
+
+        if (subname.length > 13) {
+            result += seperateFilename(subname);
+        } else {
+            result += subname;
+        }
+    } else {
+        return name;
+    }
+
+    return result;
+}
 
 // save Announcements
 function saveAnnouncements(data) {
@@ -152,7 +215,7 @@ function setAnnouncements() {
 
     annItem.hide();
 
-    clearLoad();
+    clearLoad("#announcement-tab");
 
     $(".ann-content").slideUp();
 
@@ -173,3 +236,30 @@ function setAnnouncements() {
     }
   });
 }
+
+/*******************************************************
+ * Functions that does not depends on message transfer *
+ *******************************************************/
+
+// on loading tab
+function showLoad() {
+    switchTab("#modules-tab", "#load-tab");
+}
+
+// clear loading tab
+function clearLoad(newTab) {
+    switchTab("#load-tab", newTab);
+}
+
+// switch between two tabs
+function switchTab(oldTab, newTab) {
+    $(oldTab).addClass("hide-tab");
+    $(newTab).removeClass("hide-tab");
+
+    $(oldTab).hide();
+    $(newTab).show();
+}
+
+/*******************************************************
+ * Binding with the HTML files                         *
+ *******************************************************/

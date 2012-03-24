@@ -84,17 +84,17 @@ ul.sub-menu li:hover { color: #ff5900; }
 .mod-item:hover { background: #DEE7E0; border: 1px solid #7bb138; }
 .mod-item h1 { font-size: 32px; padding: 0; }
 .mod-item h2 { padding: 0 0 5px 0; }
-.mod-id { display: none; }
 .mod-label { position: absolute; display: inline-block; width: 25px; height: 25px; padding: 5px; background: #bd0235; border: 2px solid #efefef; font-size: 18px; line-height:25px; color: #fff; box-shadow: 0px 2px 5px rgba(0,0,0,.1); border-radius: 99px; }
 .unread { background: #bd0235; top: -13px; right: -13px; }
 .zero-unread { background: #888; }
 .mod-links li { display: inline-block; }
+.mod-id, .file-id { display: none; }
 
 /* tabs - workbin */
-.folder { border-bottom: 1px solid #aaa; }
+.folder { border-bottom: 1px solid #aaa; margin-bottom: 10px; }
 .folder h2 { font-size: 20px; padding: 0px; margin-bottom: 5px; border-bottom: 1px dashed #ddd; }
 .folder h2>img { width: 23px; height: 23px; }
-.file { float: left; !width: 48px; !height: 80px; padding: 3px; margin: 0 5px 5px 0; border: 1px solid green; overflow: hidden; }
+.file { cursor: pointer; float: left; !width: 48px; !height: 80px; padding: 3px; margin: 0 5px 5px 0; overflow: hidden; }
 .file-type { display: block; width: 100%; height: 48px; background: url("../img/empty.png") top center no-repeat; }
 .doc, .docx { background-image: url("../img/docx.png"); }
 .ppt, .pptx { background-image: url("../img/pptx.png") }
