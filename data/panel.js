@@ -126,37 +126,15 @@ self.port.on("modules", setModules);
 
 function setWorkbin(data) {
     var workbinTab = $("#workbin-tab");
-    var folderItem = $(".folder:last");
-    var fileItem   = $(".file:last");
 
     // clear the contents in workbin
     workbinTab.empty();
 
-    // TODO: support folders inside folders
     var folders = data.Results[0].Folders;
 
+    // create folders and sub-folders
     for (var i = 0; i < folders.length; i++) {
-        // create folder
-        var folderClone = folderItem.clone();
-        // modify folder's icon, default: f_blue.png
-        if (folders[i].AllowUpload) {
-            folderClone.find("img").attr("src", "img/f_yellow.png"); // allow upload - yellow
-        }
-        // add folder name
-        folderClone.find("h2").append(folders[i].FolderName);
-
-        // add files inside folder
-        for (var j = 0; j < folders[i].Files.length; j++) {
-            var file      = folders[i].Files[j];
-            var fileClone = fileItem.clone();
-
-            fileClone.find(".file-type").addClass(file.FileType);
-            fileClone.find(".file-name").html(seperateFilename(file.FileName));
-            fileClone.find(".file-id").html(file.ID);
-
-            folderClone.append(fileClone);
-        }
-
+        var folderClone = createFolder(folders[i], 0);
         workbinTab.append(folderClone);
     }
 
@@ -174,7 +152,41 @@ function setWorkbin(data) {
 }
 self.port.on("workbin", setWorkbin);
 
-function addModFolder(data, level) {
+function createFolder(folder, level) {
+    var folderItem = $(".folder:last");
+    var fileItem   = $(".file:last");
+
+    // create folder
+    var folderClone = folderItem.clone();
+    // modify folder's icon, default: f_blue.png
+    if (folder.AllowUpload) {
+        folderClone.find("img").attr("src", "img/f_yellow.png"); // allow upload - yellow
+    } else if (level > 0) {
+        folderClone.addClass("sub-folder");
+        folderClone.find("img").attr("src", "img/f_green.png");  // sub folders - green
+    }
+    // add folder name
+    folderClone.find("h2").append(folder.FolderName);
+
+    // add files inside folder
+    for (var i = 0; i < folder.Files.length; i++) {
+        var file      = folder.Files[i];
+        var fileClone = fileItem.clone();
+
+        fileClone.find(".file-type").addClass(file.FileType);
+        fileClone.find(".file-name").html(seperateFilename(file.FileName));
+        fileClone.find(".file-id").html(file.ID);
+
+        folderClone.append(fileClone);
+    }
+
+    // add subfolders
+    for (var i = 0; i < folder.Folders.length; i++) {
+        var subfolder = createFolder(folder.Folders[i], level+1);
+        folderClone.append(subfolder);
+    }
+
+    return folderClone;
 }
 
 function seperateFilename(name) {
@@ -218,7 +230,7 @@ self.port.on("announcements", saveAnnouncements);
 
 function setAnnouncements() {
     var annTab  = $("#announcement-tab");
-    var annItem = $(".ann-item:first");
+    var annItem = $(".ann-item:last");
 
     // Sort annoucements according to their created date
     Announcements.data.sort(function(a, b) {
@@ -233,17 +245,17 @@ function setAnnouncements() {
         cloneItem.find("h1").html(ann.Title);
 
         var description = ann.Description.replace(/&lt;/g, "<");
-        description     = testStr.replace(/&gt;/g, ">");
-        description     = testStr.replace(/&amp;/g, "&");
+        description     = description.replace(/&gt;/g, ">");
+        description     = description.replace(/&amp;/g, "&");
 
         cloneItem.find(".ann-content").html(description);
 
         annTab.append(cloneItem);
     }
 
-    $(".ann-content").slideUp();
+    clearLoad("#announcement-tab"); // hide loading bar, show announcements
 
-    clearLoad("#announcement-tab");
+    $(".ann-content").slideUp();
 
     // bind all annoucenments events
     $(".ann-item").click(function() {
@@ -270,6 +282,8 @@ function setAnnouncements() {
 
 // on loading tab
 function showLoad() {
+    // clear all nav
+    $("#nav li").removeClass("tab-selected");
     // hide all tabs
     $(".tab").addClass("hide-tab");
     $(".tab").hide();

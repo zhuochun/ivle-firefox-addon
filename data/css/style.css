@@ -96,8 +96,8 @@ ul.sub-menu li:hover { color: #ff5900; }
 .folder h2 { font-size: 20px; padding: 0px; margin-bottom: 5px; border-bottom: 1px dashed #ddd; }
 .folder h2>img { width: 23px; height: 23px; }
 .file { cursor: pointer; float: left; width: 84px; height: 90px; padding: 3px; margin: 0 5px 5px 0; overflow: hidden; text-overflow: ellipsis; }
-.sub-folder { padding-left: 3px; border-left: 3px solid #88B541; }
-.sub-folder .file { width: 83px; }
+.sub-folder { clear: both; margin-left: 5px; padding-left: 5px; border-left: 3px solid #88B541; }
+.sub-folder .file { width: 90px; }
 .file-type { display: block; width: 100%; height: 48px; background: url("../img/empty.png") top center no-repeat; }
 .doc, .docx { background-image: url("../img/docx.png"); }
 .ppt, .pptx { background-image: url("../img/pptx.png") }
