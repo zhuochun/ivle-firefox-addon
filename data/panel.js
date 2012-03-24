@@ -141,6 +141,19 @@ function setWorkbin(data) {
     // clear loading, show workbin-tab
     clearLoad("#workbin-tab");
 
+    // bind folder events
+    $(".file, .sub-folder").slideUp();
+
+    $(".folder>h2").click(function() {
+        if ( $(this).hasClass("open-folder") ) {
+            $(this).removeClass("open-folder");
+            $(this).parent().children(".file, .sub-folder").slideUp();
+        } else {
+            $(this).addClass("open-folder");
+            $(this).parent().children(".file, .sub-folder").slideDown();
+        }
+    });
+
     // add download file events to each file
     $(".file").click(function() {
         var id = $(this).find(".file-id");
