@@ -20,6 +20,10 @@ a:link, a:visited { text-decoration: none; color: #345888; }
 a:hover, a:active { text-decoration: none; color: #bd0235; }
 ::-moz-selection { background-color: #feb256; color: #f8f8f8; }
 ::selection { background-color: #feb256; color: #f8f8f8; }
+/* let's clear some floats */
+.clearfix:before, .clearfix:after { content: "\0020"; display: block; height: 0; overflow: hidden; }  
+.clearfix:after { clear: both; }  
+.clearfix { zoom: 1; }  
 /* clear float problems */
 .group:after { visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }
 .group { display: inline-block; clear: both; }
@@ -40,7 +44,7 @@ blockquote, blockquote q { text-indent: 15px; }
 
 /* containers */
 #wrapper { overflow-x: hidden; }
-#header { height: 15px; padding: 5px 10px; line-height: 15px; background: #444; }
+#header { height: 15px; padding: 5px; line-height: 15px; background: #444; }
 #tabs { margin-top: 33px; border-top: 2px solid #A8A7A8; }
 
 /* header */
@@ -62,11 +66,8 @@ ul.sub-menu { position: absolute; z-index: 100; width: 100%; background: #E4EAF1
 ul.sub-menu li { padding: 2px 0; margin: 2px 0; }
 ul.sub-menu li:hover { color: #ff5900; }
 
-/* jpConainter */
-.jp-container{ width:400px; height:500px; position:relative; }
-
 /* tabs */
-.tab { width: 380px; padding: 10px 10px; float: left; }
+.tab { width: 380px; min-height: 400px; padding: 10px 10px; float: left; }
 .hide-tab, .hide-item { visibility: hidden; }
 #load-gif { display: block; width: 344px; height: 13px; margin: 0 auto; background: #eee url("../img/indeterminate_bar.gif") top left no-repeat; }
 
@@ -94,13 +95,17 @@ ul.sub-menu li:hover { color: #ff5900; }
 .folder { border-bottom: 1px solid #aaa; margin-bottom: 10px; }
 .folder h2 { font-size: 20px; padding: 0px; margin-bottom: 5px; border-bottom: 1px dashed #ddd; }
 .folder h2>img { width: 23px; height: 23px; }
-.file { cursor: pointer; float: left; !width: 48px; !height: 80px; padding: 3px; margin: 0 5px 5px 0; overflow: hidden; }
+.file { cursor: pointer; float: left; width: 84px; height: 90px; padding: 3px; margin: 0 5px 5px 0; overflow: hidden; text-overflow: ellipsis; }
+.sub-folder { padding-left: 3px; border-left: 3px solid #88B541; }
+.sub-folder .file { width: 83px; }
 .file-type { display: block; width: 100%; height: 48px; background: url("../img/empty.png") top center no-repeat; }
 .doc, .docx { background-image: url("../img/docx.png"); }
 .ppt, .pptx { background-image: url("../img/pptx.png") }
 .xls, .xlsx { background-image: url("../img/xlsx.png") }
-.zip, .rar { background-image: url("../img/archive.png") }
-.html, .css { background-image: url(../img/archive.png) }
+.zip, .rar { background-image: url("../img/zip.png") }
+.html, .css { background-image: url(../img/html.png) }
+.mp3, .wma { background-image: url(../img/music.png) }
+.java, .cpp { background-image: url(../img/document.png) }
 .pdf { background-image: url("../img/acrobat.png") }
 .exe { background-image: url("../img/program.png") }
 

@@ -1,58 +1,31 @@
 // Author: Wang Zhuochun
-// Last Edit: 11/Mar/2012 11:52 AM
+// Last Edit: 24/Mar/2012 02:46 PM
 
 $(document).ready(function() {
-  $(".hide-tab").hide(); // hide tabs
-  $(".sub-menu").hide(); // hide sub-menus
-  //$(".ann-content").slideUp(); // hide ann-contents
+    $(".hide-tab").hide(); // hide tabs
+    $(".sub-menu").hide(); // hide sub-menus
 
-  $("#nav li").click(function() {
-    if ( !$(this).hasClass("tab-selected") ) {
-      var oldTab = $("#nav li.tab-selected").attr("for");
-      var newTab = $(this).attr("for");
+    $("#nav li>strong").click(function() {
+        var newTab = $(this).parent().attr("for");
 
-      oldTab = oldTab || "load"; // in case of oldTab == null
-
-      $("#nav li").removeClass("tab-selected");
-      $(this).addClass("tab-selected");
-
-      $("#" + newTab + "-tab").toggleClass("hide-tab");
-      $("#" + oldTab + "-tab").toggleClass("hide-tab");
-      $("#" + newTab + "-tab").show();
-      $("#" + oldTab + "-tab").hide();
-    }
-  });
-
-  $(".sub-menu-button").click(function() {
-    var submenu = $(this).next();
-
-    $(this).parent().mouseleave(function() {
-        submenu.hide();
+        // hide all tabs
+        $(".tab").addClass("hide-tab");
+        $(".tab").hide();
+        // remove the tab-selected li
+        $("#nav li").removeClass("tab-selected");
+        $(this).parent().addClass("tab-selected");
+        // show the clicked tab
+        $("#" + newTab + "-tab").removeClass("hide-tab");
+        $("#" + newTab + "-tab").show();
     });
 
-    $(this).next().toggle();
-  });
+    $(".sub-menu-button").click(function() {
+        var submenu = $(this).next();
 
- // $(".sub-menu").mouseout(function() {
- //   $(this).toggle();
- // });
+        $(this).parent().mouseleave(function() {
+            submenu.hide();
+        });
 
-/*
-  $(".ann-item").click(function() {
-    if ( $(this).hasClass("ann-selected") ) {
-      $(this).removeClass("ann-selected");
-      $(".ann-content", this).slideToggle("fast");
-    } else {
-      var oldAnnItem = $(".ann-selected");
-      if (oldAnnItem) {
-          $(".ann-content", oldAnnItem).slideToggle("fast");
-          oldAnnItem.removeClass("ann-selected");
-      }
-
-      // append class to newly selected
-      $(this).addClass("ann-selected");
-      $(".ann-content", this).slideToggle("fast");
-    }
-  });
-*/
+        $(this).next().toggle();
+    });
 });

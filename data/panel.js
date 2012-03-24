@@ -22,12 +22,12 @@ self.on("message", function(USER) {
 */
 });
 
-// set User name
+// set username
 function setUserName(name) {
     $('#username').html(name);
     $('#user').append(' | <a href="#">Logout</a>');
 
-    // User Logout
+    // bind Logout event
     $("#user a").click(function() {
         console.log("logout");
         self.port.emit("logout");
@@ -35,33 +35,32 @@ function setUserName(name) {
 }
 self.port.on("userName", setUserName);
 
-// set User modules
+// set modules
 function setModules(data) {
     var moduleTab  = $("#modules-tab");
-    var moduleItem = $(".mod-item:first");
+    var moduleItem = $(".mod-item:last");
 
-    Modules.data = data.Results;
+    Modules.data = data.Results;        // save a copy of modules data
+    Modules.num  = data.Results.length; // record number of modules
 
     for (var i = 0; i < data.Results.length; i++) {
-        Modules.num++;
-
         var module    = data.Results[i];
         var cloneItem = moduleItem.clone();
 
+        // get module name, make sure it is only 7 chars long
         var moduleName = module.CourseCode.substring(0, 7);
-
-        //$(".modules-submenu").append("<li for=\"" + module.ID + "\">" + moduleName + "</li>");
-        $(".modules-submenu").append("<li><a href=\"#" + module.ID + "\">" + moduleName + "</a></li>");
-
+        // set module in submenu of modules
+        $("#modules-submenu").append("<li for=\"" + module.ID + "\">" + moduleName + "</li>");
+        // set contents in module box
         cloneItem.find("h1").html(moduleName);
         cloneItem.find("h2").html(module.CourseName);
         cloneItem.find(".mod-id").html(module.ID);
-        cloneItem.find(".unread").html(module.Badge);
-
+        cloneItem.find(".mod-label").html(module.Badge);
+        // set unread module badge
         if (module.Badge > 0) {
-            cloneItem.find(".unread").removeClass("zero-unread");
+            cloneItem.find(".mod-label").removeClass("zero-unread");
         }
-
+        // add module box into module-tab
         moduleTab.append(cloneItem);
 
         // get this module's announcements in the past 14 days
@@ -76,51 +75,77 @@ function setModules(data) {
         });
     }
 
-    moduleItem.hide();
+    // bind module badget with events
+    $(".mod-label").click(function() {
+        var module = $(this).parent();
+        var mod_id = module.find(".mod-id");
 
-    // bind module items with events
+        console.log("mod-label clicked, id : " + mod_id.html());
+
+        // TODO: bind announcement event
+        // TODO: fix .mod-item and .mod-lable click events both occur bug
+    });
+    // bind module box items with events
     $(".mod-item").click(function() {
         var mod = $(this).find(".mod-id");
 
-        if (mod) {
-            console.log("Load Module : " + mod.html());
-            // loading tab
-            showLoad();
-            // get this module's workbin files
-            self.port.emit("request", {
-                api    : "Workbins",
-                input  : {
-                    CourseID  : mod.html(),
-                    Duration  : 0,
-                    TitleOnly : false
-                },
-                output : "workbin"
-            });
-        } else {
-            console.log("error: empty module id");
-        }
+        console.log("Load Module : " + mod.html());
+        // show loading tab
+        showLoad();
+        // get this module's workbin files
+        self.port.emit("request", {
+            api    : "Workbins",
+            input  : {
+                CourseID  : mod.html(),
+                Duration  : 0,
+                TitleOnly : false
+            },
+            output : "workbin"
+        });
+    });
+    // bind module submenu with events
+    $("#modules-submenu>li").click(function() {
+        var mod = $(this).attr("for");
+
+        console.log("Load Module : " + mod);
+        // show loading tab
+        showLoad();
+        // get this module's workbin files
+        self.port.emit("request", {
+            api    : "Workbins",
+            input  : {
+                CourseID  : mod,
+                Duration  : 0,
+                TitleOnly : false
+            },
+            output : "workbin"
+        });
     });
 }
 self.port.on("modules", setModules);
 
 function setWorkbin(data) {
     var workbinTab = $("#workbin-tab");
-    var folderItem = $(".folder:first");
-    var fileItem   = $(".file:first");
+    var folderItem = $(".folder:last");
+    var fileItem   = $(".file:last");
 
-    // TODO: cannot parse the data correctly
-    //var results = data.Results;
+    // clear the contents in workbin
+    workbinTab.empty();
 
-    //console.log(results.ID);
-    //console.log(data["Results"]["Title"].length);
-
+    // TODO: support folders inside folders
     var folders = data.Results[0].Folders;
 
     for (var i = 0; i < folders.length; i++) {
+        // create folder
         var folderClone = folderItem.clone();
+        // modify folder's icon, default: f_blue.png
+        if (folders[i].AllowUpload) {
+            folderClone.find("img").attr("src", "img/f_yellow.png"); // allow upload - yellow
+        }
+        // add folder name
+        folderClone.find("h2").append(folders[i].FolderName);
 
-        folderClone.find("h2").append(folders[i].FolderName)
-
+        // add files inside folder
         for (var j = 0; j < folders[i].Files.length; j++) {
             var file      = folders[i].Files[j];
             var fileClone = fileItem.clone();
@@ -135,28 +160,33 @@ function setWorkbin(data) {
         workbinTab.append(folderClone);
     }
 
-    folderItem.hide();
-    fileItem.hide();
-
+    // clear loading, show workbin-tab
     clearLoad("#workbin-tab");
 
     // add download file events to each file
+    $(".file").click(function() {
+        var id = $(this).find(".file-id");
+
+        console.log("download file : " + id.html());
+
+        self.port.emit("download-file", id.html());
+    });
 }
 self.port.on("workbin", setWorkbin);
 
-function addModFolder(data) {
+function addModFolder(data, level) {
 }
 
 function seperateFilename(name) {
     var result = "";
 
-    if (name.length > 13) {
+    if (name.length > 14) {
         result += name.substr(0, 13);
         result += "<br/>";
 
         var subname = name.substr(13);
 
-        if (subname.length > 13) {
+        if (subname.length > 14) {
             result += seperateFilename(subname);
         } else {
             result += subname;
@@ -172,15 +202,13 @@ function seperateFilename(name) {
 function saveAnnouncements(data) {
     Announcements.num++;
 
-    //Announcements.data.concat(data.Results);
-
     for (var i = 0; i < data.Results.length; i++) {
         Announcements.data.push(data.Results[i]);
 
         data.Results[i].CreatedDate = new Date(parseInt(data.Results[i].CreatedDate.substr(6, 18)));
     }
 
-    console.log("Announcement : " + Announcements.num + " - " + Announcements.data.length);
+    //console.log("Announcement : " + Announcements.num + " - " + Announcements.data.length);
 
     if (Announcements.num === Modules.num) {
         setAnnouncements();
@@ -192,33 +220,32 @@ function setAnnouncements() {
     var annTab  = $("#announcement-tab");
     var annItem = $(".ann-item:first");
 
+    // Sort annoucements according to their created date
     Announcements.data.sort(function(a, b) {
         return b.CreatedDate - a.CreatedDate;
     });
 
+    // Display annoucements
     for (var i = 0; i < Announcements.data.length; i++) {
         var ann       = Announcements.data[i];
         var cloneItem = annItem.clone();
 
         cloneItem.find("h1").html(ann.Title);
 
-        // TODO: refractor code
-        var testStr = ann.Description.replace(/&lt;/g, "<");
-        testStr     = testStr.replace(/&gt;/g, ">");
-        testStr     = testStr.replace(/&amp;/g, "&");
-        //console.log(testStr);
+        var description = ann.Description.replace(/&lt;/g, "<");
+        description     = testStr.replace(/&gt;/g, ">");
+        description     = testStr.replace(/&amp;/g, "&");
 
-        cloneItem.find(".ann-content").html(testStr);
+        cloneItem.find(".ann-content").html(description);
 
         annTab.append(cloneItem);
     }
 
-    annItem.hide();
+    $(".ann-content").slideUp();
 
     clearLoad("#announcement-tab");
 
-    $(".ann-content").slideUp();
-
+    // bind all annoucenments events
     $(".ann-item").click(function() {
         if ( $(this).hasClass("ann-selected") ) {
             $(this).removeClass("ann-selected");
@@ -243,23 +270,20 @@ function setAnnouncements() {
 
 // on loading tab
 function showLoad() {
-    switchTab("#modules-tab", "#load-tab");
+    // hide all tabs
+    $(".tab").addClass("hide-tab");
+    $(".tab").hide();
+    // show the loading tab
+    $("#load-tab").removeClass("hide-tab");
+    $("#load-tab").show();
 }
 
 // clear loading tab
 function clearLoad(newTab) {
-    switchTab("#load-tab", newTab);
-}
-
-// switch between two tabs
-function switchTab(oldTab, newTab) {
-    $(oldTab).addClass("hide-tab");
+    // hide all tabs
+    $(".tab").addClass("hide-tab");
+    $(".tab").hide();
+    // show new tab
     $(newTab).removeClass("hide-tab");
-
-    $(oldTab).hide();
     $(newTab).show();
 }
-
-/*******************************************************
- * Binding with the HTML files                         *
- *******************************************************/

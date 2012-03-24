@@ -18,7 +18,7 @@
 
 <div id="wrapper">
 
-  <div id="header" class="group">
+  <div id="header" class="clearfix">
 
     <div id="user">
       Hi, <span id="username">Guest</span>
@@ -26,17 +26,17 @@
 
   </div> <!-- END header -->
 
-  <div id="tabs" class="group">
+  <div id="tabs" class="clearfix">
 
     <div id="nav">
       <ul>
-        <li for="to-do">To-do</li>
-        <li class="tab-selected" for="announcement">Announcement</li>
-        <li for="modules">Modules <span class="sub-menu-button"> </span>
-          <ul class="sub-menu modules-submenu">
+        <li for="to-do"><strong>To-do</strong></li>
+        <li class="tab-selected" for="announcement"><strong>Announcement</strong></li>
+        <li for="modules"><strong>Modules</strong> <span class="sub-menu-button"> </span>
+          <ul id="modules-submenu" class="sub-menu">
           </ul>
         </li>
-        <li for="timetable">Timetable</li>
+        <li for="timetable"><strong>Timetable</strong></li>
       </ul>
     </div> <!-- END nav -->
 
@@ -53,45 +53,14 @@
     </div> <!-- End to-do-tab -->
 
     <div id="timetable-tab" class="tab hide-tab">
-
       timetable tab
-
     </div> <!-- End timetable-tab -->
 
     <div id="announcement-tab" class="tab hide-tab">
 
-      <div class="ann-item">
-
-        <h1>Sample Announcement</h1>
-
-        <div class="ann-content">
-
-          <p>Sample Announcement</p>
-
-        </div> <!-- End ann-content -->
-
-      </div> <!-- END ann-item -->
-
     </div> <!-- END announce-tab -->
 
-    <div id="modules-tab" class="tab hide-tab group">
-
-      <div class="mod-item">
-
-        <h1>WANG</h1>
-
-        <h2>ZHUOCHUN</h2>
-
-        <span class="mod-id">MODULE ID</span>
-
-        <span class="unread zero-unread mod-label">0</span>
-
-        <ul class="mod-links">
-          <li>Workbin</li>
-          <li>Forum</li>
-        </ul>
-        
-      </div> <!-- END mod-item -->
+    <div id="modules-tab" class="tab hide-tab clearfix">
       
     </div> <!-- END modules-tab -->
 
@@ -105,11 +74,11 @@
 
     <div id="workbin-tab" class="tab hide-tab">
 
-
     </div> <!-- END workbin-tab -->
 
-    <div class="tab hide-tab">
-      <div class="folder group">
+    <div id="template-tab" class="tab hide-tab">
+      <!-- workbin folder and file templates -->
+      <div class="folder clearfix">
 
         <h2><img src="img/f_blue.png" alt="folder-icon" /> </h2>
 
@@ -120,7 +89,40 @@
         <span class="file-name">filename</span>
         <span class="file-id">id</span>
       </div>
-    </div>
+
+      <!-- an module box item template -->
+      <div class="mod-item">
+
+        <h1>WANG</h1>
+
+        <h2>ZHUOCHUN</h2>
+
+        <span class="mod-id">MODULE ID</span>
+
+        <span class="unread zero-unread mod-label">0</span>
+
+        <!--
+        <ul class="mod-links">
+          <li>Workbin</li>
+          <li>Forum</li>
+        </ul>
+        -->
+        
+      </div> <!-- END mod-item -->
+
+      <!-- an announcement item template -->
+      <div class="ann-item">
+
+        <h1>Sample Announcement</h1>
+
+        <div class="ann-content">
+
+          <p>Sample Announcement</p>
+
+        </div> <!-- End ann-content -->
+
+      </div> <!-- END ann-item -->
+    </div> <!-- END template-tab -->
     
   </div> <!-- END tabs -->
 
