@@ -158,6 +158,12 @@ function setWorkbin(data) {
     $(".file").click(function() {
         var id = $(this).find(".file-id");
 
+        var isDownloaded = $(this).find(".file-status");
+
+        if (!isDownloaded.hasClass("isDownloaded")) {
+            isDownloaded.addClass("isDownloaded");
+        }
+
         console.log("download file : " + id.html());
 
         self.port.emit("download-file", id.html());
@@ -189,6 +195,10 @@ function createFolder(folder, level) {
         fileClone.find(".file-type").addClass(file.FileType);
         fileClone.find(".file-name").html(seperateFilename(file.FileName));
         fileClone.find(".file-id").html(file.ID);
+
+        if (file.isDownloaded) {
+            fileClone.find(".file-status").addClass("isDownloaded");
+        }
 
         folderClone.append(fileClone);
     }
