@@ -21,7 +21,7 @@
   <div id="header" class="clearfix">
 
     <div id="user">
-      Hi, <span id="username">Guest</span>
+      Hi, <span id="username">Loading...</span>
     </div> <!-- END user -->
 
   </div> <!-- END header -->
@@ -42,13 +42,32 @@
 
     <div id="to-do-tab" class="tab hide-tab">
 
-      todo list tab
+      <div id="todo-add">
+        <input type="text" name="todo-add-title" placeholder="What needs to be done?" />
+      </div>
 
-      <ul>
-            <li>Module 1</li>
-            <li>Module 2</li>
-            <li>Module 3</li>
-      </ul>
+      <div id="todo-list">
+
+        <div class="todo-item">
+          <span class="todo-id"></span>
+          <input type="checkbox" name="todo-complete" class="todo-button"/>
+          <span class="todo-title">This is a todo itemThis </span>
+          <span class="todo-delete"> × </span>
+        </div>
+
+        <div class="todo-item">
+          <span class="todo-id"></span>
+          <input type="checkbox" name="todo-complete" class="todo-button"/>
+          <span class="todo-title todo-done">This is a todo itemThis </span>
+          <span class="todo-delete"> × </span>
+        </div>
+
+      </div>
+
+      <div id="todo-stats" class="clearfix">
+        <div class="todo-stats-incomplete"><strong>1</strong> item left</div>
+        <div class="todo-stats-completed"><span>1</span> completed item</div>
+      </div>
 
     </div> <!-- End to-do-tab -->
 
