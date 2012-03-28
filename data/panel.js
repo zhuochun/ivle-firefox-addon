@@ -5,30 +5,23 @@ var Modules = {
 }
 
 var Announcements = {
-    num  : 0,
-    data : []
+    num    : 0,
+    unread : 0,
+    data   : []
 }
 
 // open panel
 self.on("message", function(USER) {
-/*
-    if (!USER.token) {
-        $('#tabs').hide("fast");
-        $('#wrapper').append("<p>Please Login First. :)</p>");
-    } else if (!USER.initial) {
-        $('#tabs').hide("fast");
-        $('#wrapper').append("<p>Loading...</p>")
-    }
-*/
+    // empty
 });
 
 // set username
 function setUserName(name) {
     $('#username').html(name);
-    $('#user').append(' | <a href="#">Logout</a>');
+    $('#user').append(' | <span id="user-logout">Logout</span>');
 
     // bind Logout event
-    $("#user a").click(function() {
+    $("#user-logout").click(function() {
         console.log("logout");
         self.port.emit("logout");
     });
@@ -271,7 +264,7 @@ function setAnnouncements() {
         description     = description.replace(/&gt;/g, ">");
         description     = description.replace(/&amp;/g, "&");
 
-        cloneItem.find(".ann-content").html(description);
+        cloneItem.find(".ann-description").html(description);
 
         annTab.append(cloneItem);
     }
