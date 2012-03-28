@@ -61,7 +61,7 @@ blockquote, blockquote q { text-indent: 15px; }
 #nav li:hover { background: #E4EAF1; border-top-color: #7BB138; }
 #nav li.tab-selected:hover { border-bottom-color: #E4EAF1; border-top-color: #ff5900; }
 /* tabs - sub-menu */
-.sub-menu-button { display: inline-block; width: 7px; height: 7px; background: url("../img/nav_submenu_normal_open.png") top left no-repeat; }
+.sub-menu-button { display: inline-block; width: 7px; height: 7px; margin-right: 5px; background: url("../img/nav_submenu_normal_open.png") top left no-repeat; }
 ul.sub-menu { position: absolute; z-index: 100; width: 100%; background: #E4EAF1; padding: 10px; top: 25px; left: 0px; }
 ul.sub-menu li { padding: 2px 0; margin: 2px 0; }
 ul.sub-menu li:hover { color: #ff5900; }
@@ -81,6 +81,7 @@ ul.sub-menu li:hover { color: #ff5900; }
 .ann-action ul { padding: 0; margin: 0; }
 .ann-action li { display: inline-block;  cursor: pointer; padding: 2px 3px; margin-right: 5px; }
 .ann-action li:hover { background: #D8E9BB; }
+.ann-pushed { color: #999; }
 .ann-action img { width: 13px; height: 13px; }
 .ann-item-alter { background: #B4C8E6; }
 
@@ -89,6 +90,7 @@ ul.sub-menu li:hover { color: #ff5900; }
 .mod-item:hover { background: #DEE7E0; border: 1px solid #7bb138; }
 .mod-item h1 { font-size: 32px; padding: 0; }
 .mod-item h2 { padding: 0 0 5px 0; }
+.mod-info { padding: 10px; }
 .mod-label { position: absolute; display: inline-block; width: 25px; height: 25px; padding: 5px; background: #bd0235; border: 2px solid #efefef; font-size: 18px; line-height:25px; color: #fff; box-shadow: 0px 2px 5px rgba(0,0,0,.1); border-radius: 99px; }
 .unread { background: #bd0235; top: -13px; right: -13px; }
 .zero-unread { background: #888; }
@@ -96,6 +98,7 @@ ul.sub-menu li:hover { color: #ff5900; }
 .mod-id, .file-id, .todo-id, .ann-id { display: none; }
 
 /* tabs - workbin */
+#workbin-tab>h1, #module-announce-tab>h1 { color: #bd0235; font-size: 25px; }
 .folder { border-bottom: 1px solid #aaa; margin-bottom: 10px; }
 .folder h2 { font-size: 20px; padding: 0px; margin-bottom: 5px; border-bottom: 1px dashed #ddd; }
 .folder h2>img { width: 23px; height: 23px; }

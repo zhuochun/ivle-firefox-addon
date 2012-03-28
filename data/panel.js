@@ -43,7 +43,8 @@ function setModules(data) {
         // get module name, make sure it is only 7 chars long
         var moduleName = module.CourseCode.substring(0, 7);
         // set module in submenu of modules
-        $("#modules-submenu").append("<li for=\"" + module.ID + "\">" + moduleName + "</li>");
+        $("#modules-submenu").append('<li for="' + module.ID + '" title="' + module.CourseName + '">' + moduleName + '</li>');
+
         // set contents in module box
         cloneItem.find("h1").html(moduleName);
         cloneItem.find("h2").html(module.CourseName);
@@ -68,67 +69,90 @@ function setModules(data) {
         });
     }
 
-    // bind module badget with events
+    // bind module badget with showing announcement events
     $(".mod-label").click(function() {
         var module = $(this).parent();
-        var mod_id = module.find(".mod-id");
+        var mod_id = module.find(".mod-id").html();
+        var course = module.find("h1").html();
+        var title  = module.find("h2").html();
 
-        console.log("mod-label clicked, id : " + mod_id.html());
+        console.log("module announcement id : " + mod_id);
 
-        // TODO: bind announcement event
-        // TODO: fix .mod-item and .mod-lable click events both occur bug
+        // show loading tab
+        showLoad();
+        // get this module's all annoucements
+        self.port.emit("request", {
+            api    : "Announcements",
+            input  : {
+                CourseID  : mod_id,
+                Duration  : 0,
+                TitleOnly : false
+            },
+            output : "module_annoucement"
+        });
+
+        // clear the old contents in announcement tab
+        var annTab = $("#module-announce-tab");
+        annTab.empty();
+        annTab.append("<h1>" + course + " - " + title + "</h1>")
     });
-    // bind module box items with events
-    $(".mod-item").click(function() {
-        var mod = $(this).find(".mod-id");
 
-        console.log("Load Module : " + mod.html());
+    // load workbin for a specific module
+    var loadWorkbin = function(mod_id, course, title) {
+        console.log("Load Workbin for Module : " + mod_id);
+
         // show loading tab
         showLoad();
         // get this module's workbin files
         self.port.emit("request", {
             api    : "Workbins",
             input  : {
-                CourseID  : mod.html(),
+                CourseID  : mod_id,
                 Duration  : 0,
                 TitleOnly : false
             },
             output : "workbin"
         });
+
+        // clear the old contents in workbin tab
+        var workbinTab = $("#workbin-tab");
+        workbinTab.empty();
+        workbinTab.append("<h1>" + course + " - " + title + "</h1>")
+    }
+
+    // bind module box items with events
+    $(".mod-info").click(function() {
+        var mod_id = $(this).find(".mod-id").html();
+        var course = $(this).find("h1").html();
+        var title  = $(this).find("h2").html();
+
+        loadWorkbin(mod_id, course, title);
     });
     // bind module submenu with events
     $("#modules-submenu>li").click(function() {
-        var mod = $(this).attr("for");
+        var mod_id = $(this).attr("for");
+        var course = $(this).html();
+        var title  = $(this).attr("title");
 
-        console.log("Load Module : " + mod);
-        // show loading tab
-        showLoad();
-        // get this module's workbin files
-        self.port.emit("request", {
-            api    : "Workbins",
-            input  : {
-                CourseID  : mod,
-                Duration  : 0,
-                TitleOnly : false
-            },
-            output : "workbin"
-        });
+        loadWorkbin(mod_id, course, title);
     });
 }
 self.port.on("modules", setModules);
 
+// set Workbin tab
 function setWorkbin(data) {
     var workbinTab = $("#workbin-tab");
 
-    // clear the contents in workbin
-    workbinTab.empty();
-
+    // retrieve the folders in workbin
     var folders = data.Results[0].Folders;
 
     // create folders and sub-folders
     for (var i = 0; i < folders.length; i++) {
         var folderClone = createFolder(folders[i], 0);
-        workbinTab.append(folderClone);
+
+        if (folderClone != null) {
+            workbinTab.append(folderClone);
+        }
     }
 
     // clear loading, show workbin-tab
@@ -136,7 +160,6 @@ function setWorkbin(data) {
 
     // bind folder events
     $(".file, .sub-folder").slideUp();
-
     $(".folder>h2").click(function() {
         if ( $(this).hasClass("open-folder") ) {
             $(this).removeClass("open-folder");
@@ -158,32 +181,35 @@ function setWorkbin(data) {
         }
 
         console.log("download file : " + id.html());
-
         self.port.emit("download-file", id.html());
     });
 }
 self.port.on("workbin", setWorkbin);
 
+// create folder and inside files for Workbin
 function createFolder(folder, level) {
-    var folderItem = $(".folder:last");
-    var fileItem   = $(".file:last");
+    // do not add folder that is empty
+    if (folder.Files.length === 0 && folder.Folders.length === 0) {
+        return null;
+    }
 
     // create folder
-    var folderClone = folderItem.clone();
+    var folderClone = $(".folder:last").clone();
     // modify folder's icon, default: f_blue.png
-    if (folder.AllowUpload) {
-        folderClone.find("img").attr("src", "img/f_yellow.png"); // allow upload - yellow
-    } else if (level > 0) {
+    if (folder.AllowUpload) { // allow upload - yellow
+        folderClone.find("img").attr("src", "img/f_yellow.png");
+    } else if (level > 0) {   // sub folders - green
         folderClone.addClass("sub-folder");
-        folderClone.find("img").attr("src", "img/f_green.png");  // sub folders - green
+        folderClone.find("img").attr("src", "img/f_green.png");
     }
     // add folder name
     folderClone.find("h2").append(folder.FolderName);
 
     // add files inside folder
+    var fileItem   = $(".file:last");
     for (var i = 0; i < folder.Files.length; i++) {
-        var file      = folder.Files[i];
         var fileClone = fileItem.clone();
+        var file      = folder.Files[i];
 
         fileClone.find(".file-type").addClass(file.FileType);
         fileClone.find(".file-name").html(seperateFilename(file.FileName));
@@ -198,8 +224,11 @@ function createFolder(folder, level) {
 
     // add subfolders
     for (var i = 0; i < folder.Folders.length; i++) {
-        var subfolder = createFolder(folder.Folders[i], level+1);
-        folderClone.append(subfolder);
+        var subfolder = createFolder(folder.Folders[i], level + 1);
+
+        if (subfolder !== null) {
+            folderClone.append(subfolder);
+        }
     }
 
     return folderClone;
@@ -226,36 +255,49 @@ function seperateFilename(name) {
     return result;
 }
 
-// save Announcements
-function saveAnnouncements(data) {
+// save announcements from each module to an array
+function latestAnnouncements(data) {
     Announcements.num++;
 
+    // add all announcements to data
     for (var i = 0; i < data.Results.length; i++) {
+        data.Results[i].CreatedDate = new Date(parseInt(data.Results[i].CreatedDate.substr(6, 18)));
         Announcements.data.push(data.Results[i]);
+    }
 
+    // all modules' annoucements are collected
+    if (Announcements.num === Modules.num) {
+        setAnnouncements(Announcements.data, "#announcement-tab");
+        console.log("initialization finished");
+    }
+}
+self.port.on("announcements", latestAnnouncements);
+
+// display all annoucements from a selected module
+function moduleAnnouncements(data) {
+    console.log("module ann => " + data.Results.length);
+
+    for (var i = 0; i < data.Results.length; i++) {
         data.Results[i].CreatedDate = new Date(parseInt(data.Results[i].CreatedDate.substr(6, 18)));
     }
 
-    //console.log("Announcement : " + Announcements.num + " - " + Announcements.data.length);
-
-    if (Announcements.num === Modules.num) {
-        setAnnouncements();
-    }
+    setAnnouncements(data.Results, "#module-announce-tab")
 }
-self.port.on("announcements", saveAnnouncements);
+self.port.on("module_annoucement", moduleAnnouncements);
 
-function setAnnouncements() {
-    var annTab  = $("#announcement-tab");
+// display annoucements in sorted order in announcement tab
+function setAnnouncements(data, tab) {
+    var annTab  = $(tab);
     var annItem = $(".ann-item:last");
 
-    // Sort annoucements according to their created date
-    Announcements.data.sort(function(a, b) {
+    // sort annoucements according to their created date
+    data.sort(function(a, b) {
         return b.CreatedDate - a.CreatedDate;
     });
 
-    // Display annoucements
-    for (var i = 0; i < Announcements.data.length; i++) {
-        var ann       = Announcements.data[i];
+    // display annoucements
+    for (var i = 0; i < data.length; i++) {
+        var ann       = data[i];
         var cloneItem = annItem.clone();
 
         cloneItem.find("h1").html(ann.Title);
@@ -266,30 +308,43 @@ function setAnnouncements() {
 
         cloneItem.find(".ann-description").html(description);
 
+        // bind click event to this annoucement item
+        cloneItem.find("h1").click(function() {
+            var parent = $(this).parent();
+
+            if (parent.hasClass("ann-selected")) {
+                parent.removeClass("ann-selected");
+                parent.find(".ann-content").slideUp();
+            } else {
+                parent.addClass("ann-selected");
+                parent.find(".ann-content").slideDown();
+            }
+        });
+
+        // bind push to todos event to this annoucement item
+        cloneItem.find(".ann-push-todo").click(function() {
+            if ($(this).hasClass("ann-pushed")) {
+                alert("You have pushed this annoucement to to-dos already.");
+            } else {
+                var annItem = $(this).parents("div:eq(2)");
+                var title   = annItem.find("h1").html();
+
+                console.log("Push to Todos : " + title);
+
+                // TODO: link to todo
+
+                $(this).addClass("ann-pushed");
+                $(this).find(".word").html("Pushed Successfully!");
+            }
+        });
+
+        // append class to newly selected
         annTab.append(cloneItem);
     }
 
-    clearLoad("#announcement-tab"); // hide loading bar, show announcements
+    clearLoad(tab); // hide loading bar, show announcements
 
     $(".ann-content").slideUp();
-
-    // bind all annoucenments events
-    $(".ann-item").click(function() {
-        if ( $(this).hasClass("ann-selected") ) {
-            $(this).removeClass("ann-selected");
-            $(".ann-content", this).slideToggle();
-        } else {
-            var oldAnnItem = $(".ann-selected");
-            if (oldAnnItem) {
-              $(".ann-content", oldAnnItem).slideUp();
-              oldAnnItem.removeClass("ann-selected");
-        }
-
-        // append class to newly selected
-        $(this).addClass("ann-selected");
-        $(".ann-content", this).slideDown("fast");
-    }
-  });
 }
 
 /*******************************************************
