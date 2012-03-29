@@ -1,3 +1,7 @@
+/// @filename panel.js
+/// @author Wang Zhuochun
+/// @last edit 29/Mar/2012 09:43 PM
+
 // Variables
 var Modules = {
     num  : 0,
@@ -285,21 +289,22 @@ function moduleAnnouncements(data) {
 }
 self.port.on("module_annoucement", moduleAnnouncements);
 
-// display annoucements in sorted order in announcement tab
+// display announcements in sorted order in announcement tab
 function setAnnouncements(data, tab) {
     var annTab  = $(tab);
     var annItem = $(".ann-item:last");
 
-    // sort annoucements according to their created date
+    // sort announcements according to their created date
     data.sort(function(a, b) {
         return b.CreatedDate - a.CreatedDate;
     });
 
-    // display annoucements
+    // display announcements
     for (var i = 0; i < data.length; i++) {
         var ann       = data[i];
         var cloneItem = annItem.clone();
 
+        // update contents in announcement item
         cloneItem.find("h1").html(ann.Title);
 
         var description = ann.Description.replace(/&lt;/g, "<");
@@ -307,11 +312,18 @@ function setAnnouncements(data, tab) {
         description     = description.replace(/&amp;/g, "&");
 
         cloneItem.find(".ann-description").html(description);
+        cloneItem.find(".ann-id").html(ann.ID);
 
-        // bind click event to this annoucement item
+        // check this announcement is unread
+        if (ann.isRead) {
+            cloneItem.addClass("ann-unread");
+        }
+
+        // bind click event to this announcement item
         cloneItem.find("h1").click(function() {
             var parent = $(this).parent();
 
+            // fold and unfold announcement
             if (parent.hasClass("ann-selected")) {
                 parent.removeClass("ann-selected");
                 parent.find(".ann-content").slideUp();
@@ -319,9 +331,15 @@ function setAnnouncements(data, tab) {
                 parent.addClass("ann-selected");
                 parent.find(".ann-content").slideDown();
             }
+
+            // mark this announcement as read to IVLE server
+            if (parent.hasClass("ann-unread")) {
+                parent.removeClass("ann-unread");
+                self.port.emit("mark-ann-read", parent.find(".ann-id").html());
+            }
         });
 
-        // bind push to todos event to this annoucement item
+        // bind push to todos event to this announcement item
         cloneItem.find(".ann-push-todo").click(function() {
             if ($(this).hasClass("ann-pushed")) {
                 alert("You have pushed this annoucement to to-dos already.");
