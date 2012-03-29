@@ -67,7 +67,7 @@ ul.sub-menu li { padding: 2px 0; margin: 2px 0; }
 ul.sub-menu li:hover { color: #ff5900; }
 
 /* tabs */
-.tab { width: 380px; min-height: 400px; padding: 10px 10px; float: left; }
+.tab { width: 365px; min-height: 400px; padding: 10px 10px; float: left; }
 .hide-tab, .hide-item { visibility: hidden; }
 #load-gif { display: block; width: 344px; height: 13px; margin: 0 auto; background: #eee url("../img/indeterminate_bar.gif") top left no-repeat; }
 
@@ -87,7 +87,7 @@ ul.sub-menu li:hover { color: #ff5900; }
 .ann-item-alter { background: #B4C8E6; }
 
 /* tabs - modules */
-.mod-item { position: relative; float: left; width: 140px; height: 100px; padding: 10px; margin: 10px 25px 10px 0; background: #E5F7EA; box-shadow: 0px 2px 5px rgba(0,0,0,.1); border: 1px solid #e5f7e0; text-align: center; cursor: pointer; }
+.mod-item { position: relative; float: left; width: 132px; height: 100px; padding: 10px; margin: 10px 25px 10px 0; background: #E5F7EA; box-shadow: 0px 2px 5px rgba(0,0,0,.1); border: 1px solid #e5f7e0; text-align: center; cursor: pointer; }
 .mod-item:hover { background: #DEE7E0; border: 1px solid #7bb138; }
 .mod-item h1 { font-size: 32px; padding: 0; }
 .mod-item h2 { padding: 0 0 5px 0; }
@@ -124,7 +124,7 @@ ul.sub-menu li:hover { color: #ff5900; }
 #todo-stats { padding: 5px; background: #ECF2E3; border-top: 1px solid #BECEA5; }
 .todo-item { padding: 2px 0 5px; margin: 0 0 5px; border-bottom: 1px dashed #dfdfdf; }
 .todo-button { float: left; }
-.todo-title { display: inline-block; width: 320px; padding: 1px 0; margin: 0 5px; text-overflow: ellipsis; }
+.todo-title { display: inline-block; width: 300px; padding: 1px 0; margin: 0 5px; text-overflow: ellipsis; }
 .todo-delete { float: right; cursor: pointer; visibility: hidden; padding: 1px 5px; background: #aaa; color: #fff; }
 .todo-done { text-decoration: line-through; }
 .todo-item:hover .todo-delete { visibility: visible; }
@@ -132,7 +132,7 @@ ul.sub-menu li:hover { color: #ff5900; }
 .todo-stats-completed { float: right; padding: 3px 8px; background: #EAECE7; border: 1px solid #95BF50; border-radius: 6px; box-shadow: 0px 2px 5px rgba(0,0,0,.1); }
 
 /* style inputs */
-input[type="text"], input[type="password"], textarea { border: 1px solid #ddd; font-size: 18px; width: 350px; padding: 5px 8px 4px; border-radius: 3px; box-shadow: inset 0 2px 4px rgba(0,0,0,.1); -moz-transition: all 0.5s ease-out; }
+input[type="text"], input[type="password"], textarea { border: 1px solid #ddd; font-size: 18px; width: 330px; padding: 5px 8px 4px; border-radius: 3px; box-shadow: inset 0 2px 4px rgba(0,0,0,.1); -moz-transition: all 0.5s ease-out; }
 input[type="text"]:hover, input[type="password"]:hover, textarea:hover { border: 1px solid #888; }
 input[type="text"]:focus, input[type="password"]:focus, textarea:focus { background: #fdf3eb; border:1px solid #f2780d; }
 

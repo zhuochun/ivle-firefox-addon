@@ -6,8 +6,10 @@
 var UpdateInterval = 10; // default: 10 minutes
 
 var Modules = {
-    num  : 0,
-    data : []
+    num      : 0,
+    acadYear : undefined,
+    semester : undefined,
+    data     : []
 }
 
 var Announcements = {
@@ -41,8 +43,16 @@ function setModules(data) {
     var moduleTab  = $("#modules-tab");
     var moduleItem = $(".mod-item:last");
 
-    Modules.data = data.Results;        // save a copy of modules data
-    Modules.num  = data.Results.length; // record number of modules
+    Modules.data     = data.Results;        // save a copy of modules data
+    Modules.num      = data.Results.length; // record number of modules
+
+    if (data.Results.length > 0) {
+        Modules.acadYear = data.Results[0].CourseAcadYear; // record academic year
+        Modules.semester = data.Results[0].CourseSemester.substr(9);
+
+        console.log(Modules.acadYear);
+        console.log(Modules.semester);
+    }
 
     for (var i = 0; i < data.Results.length; i++) {
         var module    = data.Results[i];
