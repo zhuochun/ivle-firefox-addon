@@ -3,6 +3,8 @@
 /// @last edit 29/Mar/2012 09:43 PM
 
 // Variables
+var UpdateInterval = 10; // default: 10 minutes
+
 var Modules = {
     num  : 0,
     data : []
@@ -16,7 +18,9 @@ var Announcements = {
 
 // open panel
 self.on("message", function(USER) {
-    // empty
+    UpdateInterval = USER.interval;
+
+    console.log("initialed updateInterval = " + UpdateInterval);
 });
 
 // set username
@@ -43,6 +47,9 @@ function setModules(data) {
     for (var i = 0; i < data.Results.length; i++) {
         var module    = data.Results[i];
         var cloneItem = moduleItem.clone();
+
+        // add this cloneItem to Modules array as well
+        Modules.data[i].Item = cloneItem;
 
         // get module name, make sure it is only 7 chars long
         var moduleName = module.CourseCode.substring(0, 7);
@@ -142,6 +149,74 @@ function setModules(data) {
     });
 }
 self.port.on("modules", setModules);
+
+// update modules and announcements if there is new
+function updateModules(data) {
+    var notice = {
+        Update    : false,
+        AnnCount  : 0,
+        FileCount : 0
+    };
+
+    for (var i = 0; i < data.Results.length; i++) {
+        var oldMod = Modules.data[i];
+        var newMod = data.Results[i];
+
+        console.log(" = update " + newMod.CourseCode + " -> " + (newMod.Badge-oldMod.Badge));
+
+        if (oldMod.Badge != newMod.Badge) {
+            // update badge display in Module Tab
+            oldMod.Item.find(".mod-label").html(newMod.Badge);
+
+        }
+
+        var AnnCount  = newMod.BadgeAnnouncement - oldMod.BadgeAnnouncement;
+        var FileCount = newMod.Workbins[0].BadgeTool - oldMod.Workbins[0].BadgeTool;
+
+        if (AnnCount > 0) {
+            notice.Update    = true;
+            notice.AnnCount += AnnCount;
+
+            // get this module's announcements in the passed interval
+            self.port.emit("request", {
+                api    : "Announcements",
+                input  : {
+                    CourseID  : newMod.ID,
+                    Duration  : UpdateInterval,
+                    TitleOnly : false
+                },
+                output : "update-announcements"
+            });
+        }
+
+        if (FileCount > 0) {
+            notice.Update     = true;
+            notice.FileCount += FileCount;
+        }
+
+        // update data in oldMod
+        oldMod.Badge = newMod.Badge;
+        oldMod.BadgeAnnouncement = newMod.BadgeAnnouncement;
+        oldMod.Workbins[0].BadgeTool = newMod.Workbins[0].BadgeTool;
+
+        // emit notification
+        if (notice.Update) {
+            self.port.emit("send-notifications", notice);
+        }
+
+        // TODO: TESTING
+        //notice.AnnCount = 10;
+        //notice.FileCount = 11;
+        //self.port.emit("send-notifications", notice);
+    }
+}
+self.port.on("update-modules", updateModules);
+
+function updateAnnouncements(data) {
+    // TODO: finish this
+
+}
+self.port.on("update-announcements", updateAnnouncements)
 
 // set Workbin tab
 function setWorkbin(data) {
@@ -315,7 +390,8 @@ function setAnnouncements(data, tab) {
         cloneItem.find(".ann-id").html(ann.ID);
 
         // check this announcement is unread
-        if (ann.isRead) {
+        if (!ann.isRead) {
+            Announcements.unread++;
             cloneItem.addClass("ann-unread");
         }
 
