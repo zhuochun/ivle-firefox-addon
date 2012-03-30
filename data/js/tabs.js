@@ -1,5 +1,5 @@
 // Author: Wang Zhuochun
-// Last Edit: 24/Mar/2012 02:46 PM
+// Last Edit: 30/Mar/2012 08:26 PM
 
 $(document).ready(function() {
     $(".hide-tab").hide(); // hide tabs
@@ -26,6 +26,6 @@ $(document).ready(function() {
             submenu.hide();
         });
 
-        $(this).next().toggle();
+        submenu.slideToggle();
     });
 });

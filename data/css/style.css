@@ -78,7 +78,7 @@ ul.sub-menu li:hover { color: #ff5900; }
 .ann-item:hover { border-left-color: #7bb138; background: #f8f8f8; 1#D8F3E0; }
 .ann-unread { background: #F6DBC9; }
 .ann-content { padding: 5px; }
-.ann-action { padding: 5px; margin-top: 5px; background: #ECF2E3; border-top: 1px solid #BECEA5; font-size: 13px; }
+.ann-action { padding: 5px; margin-top: 10px; background: #ECF2E3; border-top: 1px solid #BECEA5; font-size: 13px; }
 .ann-action ul { padding: 0; margin: 0; }
 .ann-action li { display: inline-block;  cursor: pointer; padding: 2px 3px; margin-right: 5px; }
 .ann-action li:hover { background: #D8E9BB; }
