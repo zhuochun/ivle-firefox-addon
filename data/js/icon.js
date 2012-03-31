@@ -22,7 +22,11 @@ self.port.on("flash-count", flashCount);
 
 // clear the flashing page title
 function clearFlash() {
-    clearTimeout(timeout);
+    if (timeout) {
+        clearTimeout(timeout);
+        timeout = undefined;
+    }
+
     document.title = original;
 }
 self.port.on("flash-clear", clearFlash);

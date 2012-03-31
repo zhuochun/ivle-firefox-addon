@@ -212,17 +212,18 @@ function updateModules(data) {
         // emit notification
         if (notice.Update) {
             self.port.emit("send-notifications", notice);
+            self.port.emit("icon-change", notice.AnnCount);
         }
-
-        // TODO: TESTING
-        //notice.AnnCount = 10;
-        //notice.FileCount = 11;
-        //self.port.emit("send-notifications", notice);
     }
 }
 self.port.on("update-modules", updateModules);
 
 function updateAnnouncements(data) {
+    // add all announcements to data
+    for (var i = 0; i < data.Results.length; i++) {
+        data.Results[i].CreatedDate = new Date(parseInt(data.Results[i].CreatedDate.substr(6, 18)));
+        Announcements.data.push(data.Results[i]);
+    }
     // TODO: finish this
 
 }
