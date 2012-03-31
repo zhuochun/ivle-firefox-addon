@@ -67,7 +67,7 @@ ul.sub-menu li { padding: 2px 0; margin: 2px 0; }
 ul.sub-menu li:hover { color: #ff5900; }
 
 /* tabs */
-.tab { width: 365px; min-height: 400px; padding: 10px 10px; float: left; }
+.tab { width: 365px; min-height: 400px; padding: 10px; float: left; }
 .hide-tab, .hide-item { visibility: hidden; }
 #load-gif { display: block; width: 344px; height: 13px; margin: 0 auto; background: #eee url("../img/indeterminate_bar.gif") top left no-repeat; }
 

@@ -109,7 +109,7 @@ function setModules(data) {
                 Duration  : 0,
                 TitleOnly : false
             },
-            output : "module_annoucement"
+            output : "module-annoucement"
         });
 
         // clear the old contents in announcement tab
@@ -373,7 +373,7 @@ function moduleAnnouncements(data) {
 
     setAnnouncements(data.Results, "#module-announce-tab")
 }
-self.port.on("module_annoucement", moduleAnnouncements);
+self.port.on("module-annoucement", moduleAnnouncements);
 
 // display announcements in sorted order in announcement tab
 function setAnnouncements(data, tab) {
@@ -452,9 +452,18 @@ function setAnnouncements(data, tab) {
     $(".ann-content").slideUp();
 }
 
-/*******************************************************
- * Functions that does not depends on message transfer *
- *******************************************************/
+// todo testing
+// todo list initial
+function setTodoList(data) {
+    for (var i = 0; i < data.length; i++) {
+        console.log(data[i].title);
+    }
+}
+self.port.on("todo-initial")
+
+// ****************************************************************************
+// functions that does not depends on message transfer
+// ****************************************************************************
 
 // on loading tab
 function showLoad() {

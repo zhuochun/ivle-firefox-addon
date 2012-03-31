@@ -9,13 +9,13 @@
     "dependencies": ["toolbarbutton", "addon-kit"],
     "preferences": [
         {
-            "name"  : "LAPI",
+            "name"  : "ivle_lapi",
             "title" : "Your LAPI Key",
             "type"  : "string",
             "value" : "EoiogswE3e01bgl0ufptr"
         },
         {
-            "name"  : "Interval",
+            "name"  : "ivle_interval",
             "title" : "Announcement Update Interval (Minutes)",
             "type"  : "integer",
             "value" : 10
