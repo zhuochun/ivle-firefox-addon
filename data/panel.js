@@ -1,6 +1,6 @@
 /// @filename panel.js
 /// @author Wang Zhuochun
-/// @last edit 29/Mar/2012 09:43 PM
+/// @last edit 01/Apr/2012 05:06 PM
 
 // Variables
 var UpdateInterval = 10; // default: 10 minutes
@@ -27,7 +27,6 @@ self.on("message", function(USER) {
 // initial panel
 self.port.on("initial-panel", function(USER) {
     UpdateInterval = USER.interval;
-    console.log("initialed updateInterval = " + UpdateInterval);
 });
 
 // set username
@@ -37,7 +36,6 @@ function setUserName(name) {
 
     // bind Logout event
     $("#user-logout").click(function() {
-        console.log("logout");
         self.port.emit("logout");
     });
 }
@@ -54,9 +52,6 @@ function setModules(data) {
     if (data.Results.length > 0) {
         Modules.acadYear = data.Results[0].CourseAcadYear; // record academic year
         Modules.semester = data.Results[0].CourseSemester.substr(9);
-
-        console.log(Modules.acadYear);
-        console.log(Modules.semester);
     }
 
     for (var i = 0; i < data.Results.length; i++) {
@@ -102,8 +97,6 @@ function setModules(data) {
         var course = module.find("h1").html();
         var title  = module.find("h2").html();
 
-        console.log("module announcement id : " + mod_id);
-
         // show loading tab
         showLoad();
         // get this module's all annoucements
@@ -125,8 +118,6 @@ function setModules(data) {
 
     // load workbin for a specific module
     var loadWorkbin = function(mod_id, course, title) {
-        console.log("Load Workbin for Module : " + mod_id);
-
         // show loading tab
         showLoad();
         // get this module's workbin files
@@ -182,8 +173,6 @@ function updateModules(data) {
         var oldMod = Modules.data[i];
         var newMod = data.Results[i];
 
-        console.log(" = update " + newMod.CourseCode + " -> " + (newMod.Badge-oldMod.Badge));
-
         if (oldMod.Badge != newMod.Badge) {
             // update badge display in Module Tab
             oldMod.Item.find(".mod-label").html(newMod.Badge);
@@ -230,7 +219,6 @@ function updateModules(data) {
 self.port.on("update-modules", updateModules);
 
 // update announcements tab if there are new Announcements coming
-// TODO: update announcments may be do not switch tab
 function updateAnnouncements(data) {
     Announcements.update++;
 
@@ -242,7 +230,6 @@ function updateAnnouncements(data) {
 
     if (Announcements.update === Modules.update) {
         setAnnouncements(Announcements.data, "#announcement-tab");
-        console.log("new announcements updated");
     }
 }
 self.port.on("update-announcements", updateAnnouncements)
@@ -288,7 +275,6 @@ function setWorkbin(data) {
             isDownloaded.addClass("isDownloaded");
         }
 
-        console.log("download file : " + id.html());
         self.port.emit("download-file", id.html());
     });
 }
@@ -376,15 +362,12 @@ function latestAnnouncements(data) {
     // all modules' annoucements are collected
     if (Announcements.num === Modules.num) {
         setAnnouncements(Announcements.data, "#announcement-tab");
-        console.log("initialization finished");
     }
 }
 self.port.on("announcements", latestAnnouncements);
 
 // display all annoucements from a selected module
 function moduleAnnouncements(data) {
-    console.log("module ann => " + data.Results.length);
-
     for (var i = 0; i < data.Results.length; i++) {
         data.Results[i].CreatedDate = new Date(parseInt(data.Results[i].CreatedDate.substr(6, 18)));
     }
@@ -451,8 +434,6 @@ function setAnnouncements(data, tab) {
             } else {
                 var annItem = $(this).parents("div:eq(2)");
                 var title   = annItem.find("h1").html();
-
-                console.log("Push to Todos : " + title);
 
                 addTask("announcement", title);
 
@@ -547,11 +528,6 @@ function setTodoList(list) {
 
             self.port.emit("todo-done", todo);
         });
-
-        // TODO: bind task edit to this item
-        //cloneItem.find(".todo-title").click(function() {
-
-        //});
 
         // append clone to todoList
         todoList.append(cloneItem);
