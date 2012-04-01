@@ -583,7 +583,7 @@ function showError() {
     var msg = $("#error-msg");
 
     msg.append("<h1>Sorry! Failed to Retrieve Data from IVLE API. :(</h1>");
-    msg.append("<p>Please check your Internet connection or change the IVLE API key in add-on setting page by using your own API key.</p>");
+    msg.append("<p>Please check your Internet connection or change the IVLE API key in the Add-On setting page by using your own API key.</p>");
 }
 self.port.on("internet-failed", showError);
 
