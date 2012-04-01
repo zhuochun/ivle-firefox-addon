@@ -371,11 +371,22 @@ function latestAnnouncements(data) {
     for (var i = 0; i < data.Results.length; i++) {
         data.Results[i].CreatedDate = new Date(parseInt(data.Results[i].CreatedDate.substr(6, 18)));
         Announcements.data.push(data.Results[i]);
+
+        if (!data.Results[i].isRead) {
+            Announcements.unread++;
+        }
     }
 
     // all modules' annoucements are collected
     if (Announcements.num === Modules.num) {
         setAnnouncements(Announcements.data, "#announcement-tab");
+
+        console.log("unread announcements = " + Announcements.unread);
+
+        if (Announcements.unread > 0) {
+            self.port.emit("icon-change", Announcements.unread);
+        }
+
         console.log("initialization finished");
     }
 }
@@ -420,7 +431,6 @@ function setAnnouncements(data, tab) {
 
         // check this announcement is unread
         if (!ann.isRead) {
-            Announcements.unread++;
             cloneItem.addClass("ann-unread");
         }
 
@@ -439,7 +449,11 @@ function setAnnouncements(data, tab) {
 
             // mark this announcement as read to IVLE server
             if (parent.hasClass("ann-unread")) {
+                Announcements.unread--;
+
                 parent.removeClass("ann-unread");
+
+                self.port.emit("icon-change", Announcements.unread);
                 self.port.emit("mark-ann-read", parent.find(".ann-id").html());
             }
         });

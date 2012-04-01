@@ -12,6 +12,10 @@ var timeout;
 
 // change the flashing page title
 function flashCount(count) {
+    if (count < 1) {
+        clearFlash();
+    }
+
     var newTitle = "[ " + count + " ] " + original;
 
     timeout = setInterval(function() {
