@@ -7,6 +7,7 @@ var UpdateInterval = 10; // default: 10 minutes
 
 var Modules = {
     num      : 0,
+    update   : 0,
     acadYear : undefined,
     semester : undefined,
     data     : []
@@ -14,14 +15,18 @@ var Modules = {
 
 var Announcements = {
     num    : 0,
+    update : 0,
     unread : 0,
     data   : []
 }
 
 // open panel
 self.on("message", function(USER) {
-    UpdateInterval = USER.interval;
+});
 
+// initial panel
+self.port.on("initial-panel", function(USER) {
+    UpdateInterval = USER.interval;
     console.log("initialed updateInterval = " + UpdateInterval);
 });
 
@@ -168,6 +173,11 @@ function updateModules(data) {
         FileCount : 0
     };
 
+    // clear Modules.update to accept new announcements
+    Modules.update       = 0;
+    Announcements.update = 0;
+
+    // check all modules for new announcements or new files in workbins
     for (var i = 0; i < data.Results.length; i++) {
         var oldMod = Modules.data[i];
         var newMod = data.Results[i];
@@ -177,7 +187,6 @@ function updateModules(data) {
         if (oldMod.Badge != newMod.Badge) {
             // update badge display in Module Tab
             oldMod.Item.find(".mod-label").html(newMod.Badge);
-
         }
 
         var AnnCount  = newMod.BadgeAnnouncement - oldMod.BadgeAnnouncement;
@@ -186,6 +195,8 @@ function updateModules(data) {
         if (AnnCount > 0) {
             notice.Update    = true;
             notice.AnnCount += AnnCount;
+
+            Modules.update++;
 
             // get this module's announcements in the passed interval
             self.port.emit("request", {
@@ -218,14 +229,21 @@ function updateModules(data) {
 }
 self.port.on("update-modules", updateModules);
 
+// update announcements tab if there are new Announcements coming
+// TODO: update announcments may be do not switch tab
 function updateAnnouncements(data) {
+    Announcements.update++;
+
     // add all announcements to data
     for (var i = 0; i < data.Results.length; i++) {
         data.Results[i].CreatedDate = new Date(parseInt(data.Results[i].CreatedDate.substr(6, 18)));
         Announcements.data.push(data.Results[i]);
     }
-    // TODO: finish this
 
+    if (Announcements.update === Modules.update) {
+        setAnnouncements(Announcements.data, "#announcement-tab");
+        console.log("new announcements updated");
+    }
 }
 self.port.on("update-announcements", updateAnnouncements)
 
@@ -436,7 +454,7 @@ function setAnnouncements(data, tab) {
 
                 console.log("Push to Todos : " + title);
 
-                // TODO: link to todo
+                addTask("announcement", title);
 
                 $(this).addClass("ann-pushed");
                 $(this).find(".word").html("Pushed Successfully!");
@@ -452,14 +470,98 @@ function setAnnouncements(data, tab) {
     $(".ann-content").slideUp();
 }
 
-// todo testing
-// todo list initial
-function setTodoList(data) {
-    for (var i = 0; i < data.length; i++) {
-        console.log(data[i].title);
-    }
+function addTask(type, title) {
+    var todo = {
+        type  : type,
+        title : title
+    };
+
+    self.port.emit("todo-add", todo);
 }
-self.port.on("todo-initial")
+
+// todo list initial
+function initialTodoList(list) {
+    setTodoList(list);
+
+    // bind input event to add task
+    $("#todo-add-input").keypress(function(event) {
+        if (event.which == 13) {
+            var title = $(this).val();
+
+            if (title && title.length > 0) {
+                addTask("task", title);
+
+                $(this).val("");
+            }
+        }
+    });
+
+    // bind clear all completed tasks event
+    $("#todo-stats-completed").click(function() {
+        self.port.emit("todo-clear-done");
+    });
+}
+self.port.on("todo-initial", initialTodoList);
+
+// set todo list
+function setTodoList(list) {
+    var todoList = $("#todo-list");
+    var todoItem = $(".todo-item:last");
+
+    // clear all contents in todoList
+    todoList.empty();
+
+    // add all todos to todoList
+    for (var i = 0; i < list.todos.length; i++) {
+        var task       = list.todos[i];
+        var cloneItem  = todoItem.clone();
+        var cloneTitle = cloneItem.find(".todo-title");
+        
+        // set up elements in clone
+        cloneItem.find(".todo-id").html(task.id);
+        cloneTitle.html(task.title);
+        cloneTitle.addClass("todo-" + task.type);
+
+        if (task.done) {
+            cloneItem.find(".todo-title").addClass("todo-done");
+            cloneItem.find(".todo-button").attr("checked", "checked");
+        }
+
+        // bind delete task event to this item
+        cloneItem.find(".todo-delete").click(function() {
+            var parent = $(this).parent();
+            var id     = parent.find(".todo-id:first").html();
+
+            self.port.emit("todo-remove", id);
+        });
+
+        // bind task status change to this item
+        cloneItem.find(".todo-button").click(function() {
+            var parent    = $(this).parent();
+            var completed = $(this).attr("checked");
+
+            var todo      = {
+                id   : parent.find(".todo-id:first").html(),
+                done : completed === "checked"
+            };
+
+            self.port.emit("todo-done", todo);
+        });
+
+        // TODO: bind task edit to this item
+        //cloneItem.find(".todo-title").click(function() {
+
+        //});
+
+        // append clone to todoList
+        todoList.append(cloneItem);
+    }
+
+    // change stats in todo-ab
+    $("#todo-stats-incomplete").find("strong").html(list.stats.todoLeft);
+    $("#todo-stats-completed").find("span:first").html(list.stats.todoCompleted);
+}
+self.port.on("todo-update",  setTodoList);
 
 // ****************************************************************************
 // functions that does not depends on message transfer

@@ -125,6 +125,8 @@ ul.sub-menu li:hover { color: #ff5900; }
 .todo-item { padding: 2px 0 5px; margin: 0 0 5px; border-bottom: 1px dashed #dfdfdf; }
 .todo-button { float: left; }
 .todo-title { display: inline-block; width: 300px; padding: 1px 0; margin: 0 5px; text-overflow: ellipsis; }
+.todo-announcement { color: #092978; }
+.todo-task {  }
 .todo-delete { float: right; cursor: pointer; display: none; padding: 1px 5px; background: #a8a8a8; color: #fff; border-radius: 99px; }
 .todo-done { text-decoration: line-through; }
 .todo-item:hover .todo-delete { display: block; }
