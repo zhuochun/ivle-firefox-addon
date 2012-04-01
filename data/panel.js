@@ -577,12 +577,23 @@ function setTodoList(list) {
 }
 self.port.on("todo-update",  setTodoList);
 
+function showError() {
+    showLoad();
+
+    var msg = $("#error-msg");
+
+    msg.append("<h1>Sorry! Failed to Retrieve Data from IVLE API. :(</h1>");
+    msg.append("<p>Please check your Internet connection or change the IVLE API key in add-on setting page by using your own API key.</p>");
+}
+self.port.on("internet-failed", showError);
+
 // ****************************************************************************
 // functions that does not depends on message transfer
 // ****************************************************************************
 
 // on loading tab
 function showLoad() {
+    $("#error-msg").empty();
     // clear all nav
     $("#nav li").removeClass("tab-selected");
     // hide all tabs

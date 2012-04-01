@@ -69,7 +69,8 @@ ul.sub-menu li:hover { color: #ff5900; }
 /* tabs */
 .tab { width: 365px; min-height: 400px; padding: 10px; float: left; }
 .hide-tab, .hide-item { visibility: hidden; }
-#load-gif { display: block; width: 344px; height: 13px; margin: 0 auto; background: #eee url("../img/indeterminate_bar.gif") top left no-repeat; }
+#load-gif { display: block; width: 344px; height: 13px; margin: 0 auto 10px; background: #eee url("../img/indeterminate_bar.gif") top left no-repeat; }
+#error-msg { }
 
 /* tabs - announcement */
 .ann-item { padding: 5px; margin: 0 0 10px; background: #F4F3E7; border-left: 3px solid #f0f0f0; }
