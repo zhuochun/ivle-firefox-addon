@@ -5,20 +5,37 @@
 // Variables
 var UpdateInterval = 10; // default: 10 minutes
 
+var Items = {
+    error    : $("#error-msg"),
+    module   : $(".mod-item:last"),
+    announce : $(".ann-item:last"),
+    todoList : $("#todo-list"),
+    todoItem : $(".todo-item:last"),
+    todoComp : $("#todo-stats-completed"),
+    todoInco : $("#todo-stats-incomplete")
+};
+
+var Tabs = {
+    modules  : $("#modules-tab"),
+    workbin  : $("#workbin-tab"),
+    announce : $("#announcement-tab"),
+    modAnn   : $("#module-announce-tab")
+};
+
 var Modules = {
     num      : 0,
     update   : 0,
     acadYear : undefined,
     semester : undefined,
     data     : []
-}
+};
 
 var Announcements = {
     num    : 0,
     update : 0,
     unread : 0,
     data   : []
-}
+};
 
 // open panel
 self.on("message", function(USER) {
@@ -37,7 +54,6 @@ function setUserName(name) {
 
     // bind Logout event
     $("#user-logout").click(function() {
-        console.log("logout");
         self.port.emit("logout");
     });
 }
@@ -45,11 +61,11 @@ self.port.on("userName", setUserName);
 
 // set modules
 function setModules(data) {
-    var moduleTab  = $("#modules-tab");
-    var moduleItem = $(".mod-item:last");
+    var moduleTab  = Tabs.modules;
+    var moduleItem = Items.module;
 
-    Modules.data     = data.Results;        // save a copy of modules data
-    Modules.num      = data.Results.length; // record number of modules
+    Modules.data = data.Results;        // save a copy of modules data
+    Modules.num  = data.Results.length; // record number of modules
 
     if (data.Results.length > 0) {
         Modules.acadYear = data.Results[0].CourseAcadYear; // record academic year
@@ -118,9 +134,8 @@ function setModules(data) {
         });
 
         // clear the old contents in announcement tab
-        var annTab = $("#module-announce-tab");
-        annTab.empty();
-        annTab.append("<h1>" + course + " - " + title + "</h1>")
+        Tabs.modAnn.empty();
+        Tabs.modAnn.append("<h1>" + course + " - " + title + "</h1>")
     });
 
     // load workbin for a specific module
@@ -141,9 +156,8 @@ function setModules(data) {
         });
 
         // clear the old contents in workbin tab
-        var workbinTab = $("#workbin-tab");
-        workbinTab.empty();
-        workbinTab.append("<h1>" + course + " - " + title + "</h1>")
+        Tabs.workbin.empty();
+        Tabs.workbin.append("<h1>" + course + " - " + title + "</h1>")
     }
 
     // bind module box items with events
@@ -220,7 +234,7 @@ function updateModules(data) {
         oldMod.BadgeAnnouncement = newMod.BadgeAnnouncement;
         oldMod.Workbins[0].BadgeTool = newMod.Workbins[0].BadgeTool;
 
-        // emit notification
+        // emit notifications
         if (notice.Update) {
             self.port.emit("send-notifications", notice);
             self.port.emit("icon-change", notice.AnnCount);
@@ -241,15 +255,15 @@ function updateAnnouncements(data) {
     }
 
     if (Announcements.update === Modules.update) {
-        setAnnouncements(Announcements.data, "#announcement-tab");
         console.log("new announcements updated");
+        setAnnouncements(Announcements.data, Tabs.announce);
     }
 }
 self.port.on("update-announcements", updateAnnouncements)
 
 // set Workbin tab
 function setWorkbin(data) {
-    var workbinTab = $("#workbin-tab");
+    var workbinTab = Tabs.workbin;
 
     // retrieve the folders in workbin
     var folders = data.Results[0].Folders;
@@ -264,7 +278,7 @@ function setWorkbin(data) {
     }
 
     // clear loading, show workbin-tab
-    clearLoad("#workbin-tab");
+    clearLoad(Tabs.workbin);
 
     // bind folder events
     $(".file, .sub-folder").slideUp();
@@ -379,7 +393,7 @@ function latestAnnouncements(data) {
 
     // all modules' annoucements are collected
     if (Announcements.num === Modules.num) {
-        setAnnouncements(Announcements.data, "#announcement-tab");
+        setAnnouncements(Announcements.data, Tabs.announce);
 
         console.log("unread announcements = " + Announcements.unread);
 
@@ -400,14 +414,13 @@ function moduleAnnouncements(data) {
         data.Results[i].CreatedDate = new Date(parseInt(data.Results[i].CreatedDate.substr(6, 18)));
     }
 
-    setAnnouncements(data.Results, "#module-announce-tab")
+    setAnnouncements(data.Results, Tabs.modAnn);
 }
 self.port.on("module-annoucement", moduleAnnouncements);
 
 // display announcements in sorted order in announcement tab
-function setAnnouncements(data, tab) {
-    var annTab  = $(tab);
-    var annItem = $(".ann-item:last");
+function setAnnouncements(data, annTab) {
+    var annItem = Items.announce;
 
     // sort announcements according to their created date
     data.sort(function(a, b) {
@@ -479,7 +492,7 @@ function setAnnouncements(data, tab) {
         annTab.append(cloneItem);
     }
 
-    clearLoad(tab); // hide loading bar, show announcements
+    clearLoad(annTab); // hide loading bar, show announcements
 
     $(".ann-content").slideUp();
 }
@@ -495,6 +508,8 @@ function addTask(type, title) {
 
 // todo list initial
 function initialTodoList(list) {
+    Items.todoComp.hide();
+
     setTodoList(list);
 
     // bind input event to add task
@@ -511,7 +526,7 @@ function initialTodoList(list) {
     });
 
     // bind clear all completed tasks event
-    $("#todo-stats-completed").click(function() {
+    Items.todoComp.click(function() {
         self.port.emit("todo-clear-done");
     });
 }
@@ -519,8 +534,8 @@ self.port.on("todo-initial", initialTodoList);
 
 // set todo list
 function setTodoList(list) {
-    var todoList = $("#todo-list");
-    var todoItem = $(".todo-item:last");
+    var todoList = Items.todoList;
+    var todoItem = Items.todoItem;
 
     // clear all contents in todoList
     todoList.empty();
@@ -571,19 +586,29 @@ function setTodoList(list) {
         todoList.append(cloneItem);
     }
 
+    if (list.todos.length === 0) {
+        todoList.append("<p style=\"color:#aaa;text-align:center\">Y U Have Nothing to Do!!! :)</p>")
+    }
+
     // change stats in todo-ab
-    $("#todo-stats-incomplete").find("strong").html(list.stats.todoLeft);
-    $("#todo-stats-completed").find("span:first").html(list.stats.todoCompleted);
+    Items.todoInco.find("strong:first").html(list.stats.todoLeft);
+    Items.todoInco.find(".word:first").html(list.stats.todoLeft <= 1 ? "item" : "items");
+
+    Items.todoComp.find("span:first").html(list.stats.todoCompleted);
+    Items.todoComp.find(".word:first").html(list.stats.todoCompleted <= 1 ? "item" : "items");
+
+    if (list.stats.todoCompleted > 0) {
+        Items.todoComp.fadeIn();
+    } else {
+        Items.todoComp.fadeOut();
+    }
 }
 self.port.on("todo-update",  setTodoList);
 
 function showError() {
     showLoad();
-
-    var msg = $("#error-msg");
-
-    msg.append("<h1>Sorry! Failed to Retrieve Data from IVLE API. :(</h1>");
-    msg.append("<p>Please check your Internet connection or change the IVLE API key in the Add-On setting page by using your own API key.</p>");
+    Items.error.append("<h1>Sorry! Failed to Retrieve Data from IVLE API. :(</h1>");
+    Items.error.append("<p>Please check your Internet connection or change the IVLE API key in the Add-On setting page by using your own API key.</p>");
 }
 self.port.on("internet-failed", showError);
 
@@ -593,7 +618,7 @@ self.port.on("internet-failed", showError);
 
 // on loading tab
 function showLoad() {
-    $("#error-msg").empty();
+    Items.error.empty();
     // clear all nav
     $("#nav li").removeClass("tab-selected");
     // hide all tabs
@@ -610,6 +635,6 @@ function clearLoad(newTab) {
     $(".tab").addClass("hide-tab");
     $(".tab").hide();
     // show new tab
-    $(newTab).removeClass("hide-tab");
-    $(newTab).show();
+    newTab.removeClass("hide-tab");
+    newTab.show();
 }

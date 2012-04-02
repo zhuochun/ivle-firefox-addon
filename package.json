@@ -1,16 +1,16 @@
 {
-    "name": "nus-ivle", 
+    "name": "nus-ivle-helper", 
     "license": "MPL 1.1", 
     "author": "Wang Zhuochun", 
-    "version": "0.7.3", 
-    "fullName": "NUS IVLE Add-on", 
+    "version": "0.7.6", 
+    "fullName": "NUS IVLE Helper", 
     "id": "jid1-vjoeYnFKMzBCdA", 
-    "description": "An Add-on for NUS IVLE platform",
+    "description": "NUS IVLE Helper is an Firefox Add-on to ease the using of IVLE platform for NUS students. It contains Announcements, Workbins and To-do List.",
     "dependencies": ["toolbarbutton", "addon-kit"],
     "preferences": [
         {
             "name"  : "ivle_lapi",
-            "title" : "Your LAPI Key",
+            "title" : "Your LAPI Key (Require Restart)",
             "type"  : "string",
             "value" : "EoiogswE3e01bgl0ufptr"
         },

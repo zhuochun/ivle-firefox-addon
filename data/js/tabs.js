@@ -28,4 +28,5 @@ $(document).ready(function() {
 
         submenu.slideToggle();
     });
+
 });
