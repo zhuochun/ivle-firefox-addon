@@ -1,7 +1,7 @@
 // To Retrieve the user token from url
 // Last Edit 11/Mar/2012 04:20 PM
 
-console.log("getting token script");
+//console.log("getting token script");
 
 var search = function () {
     var p = window.location.search.substr(1).split(/\&/), l = p.length, kv, r = {};

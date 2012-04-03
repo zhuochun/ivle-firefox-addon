@@ -1,6 +1,6 @@
 /// @filename panel.js
 /// @author Wang Zhuochun
-/// @last edit 29/Mar/2012 09:43 PM
+/// @last edit 03/Apr/2012 04:16 PM
 
 // Variables
 var UpdateInterval = 10; // default: 10 minutes
@@ -44,7 +44,6 @@ self.on("message", function(USER) {
 // initial panel
 self.port.on("initial-panel", function(USER) {
     UpdateInterval = USER.interval;
-    console.log("initialed updateInterval = " + UpdateInterval);
 });
 
 // set username

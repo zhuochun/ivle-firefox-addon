@@ -37,7 +37,6 @@ self.port.on("flash-clear", clearFlash);
 
 // change the badget ico in IVLE
 function changeCount(count) {
-    console.log("change count = " + count);
     Tinycon.setBubble(count);
 }
 self.port.on("change-count", changeCount);
