@@ -49,7 +49,6 @@ self.port.on("initial-panel", function(USER) {
 // set username
 function setUserName(name) {
     $('#username').html(name);
-    $('#user').append(' | <span id="user-logout">Logout</span>');
 
     // bind Logout event
     $("#user-logout").click(function() {
