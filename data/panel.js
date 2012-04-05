@@ -6,8 +6,10 @@
 var UpdateInterval = 10; // default: 10 minutes
 
 var Items = {
+    username : $("#username"),
     error    : $("#error-msg"),
     module   : $(".mod-item:last"),
+    modmenu  : $("#modules-submenu"),
     announce : $(".ann-item:last"),
     todoList : $("#todo-list"),
     todoItem : $(".todo-item:last"),
@@ -48,11 +50,31 @@ self.port.on("initial-panel", function(USER) {
 
 // set username
 function setUserName(name) {
-    $('#username').html(name);
+    Items.username.html(name);
 
     // bind Logout event
     $("#user-logout").click(function() {
         self.port.emit("logout");
+        // Show Load
+        showLoad();
+        // Clear the username
+        Items.username.html(" ");
+        // Clear all information in different Tabs
+        Tabs.modules.empty();
+        Tabs.workbin.empty();
+        Tabs.modAnn.empty();
+        Tabs.announce.empty();
+        // Clear module information of the user
+        Modules.num    = 0;
+        Modules.update = 0;
+        Modules.data   = [];
+        // Clear Modules Submenu
+        Items.modmenu.find("li").remove();
+        // Clear announcement information of the user
+        Announcements.num    = 0;
+        Announcements.update = 0;
+        Announcements.unread = 0;
+        Announcements.data   = [];
     });
 }
 self.port.on("userName", setUserName);
@@ -83,7 +105,7 @@ function setModules(data) {
         // get module name, make sure it is only 7 chars long
         var moduleName = module.CourseCode.substring(0, 7);
         // set module in submenu of modules
-        $("#modules-submenu").append('<li for="' + module.ID + '" title="' + module.CourseName + '">' + moduleName + '</li>');
+        Items.modmenu.append('<li for="' + module.ID + '" title="' + module.CourseName + '">' + moduleName + '</li>');
 
         // set contents in module box
         cloneItem.find("h1").html(moduleName);
@@ -443,6 +465,7 @@ function setAnnouncements(data, annTab) {
         // check this announcement is unread
         if (!ann.isRead) {
             cloneItem.addClass("ann-unread");
+            Announcements.unread++;
         }
 
         // bind click event to this announcement item
@@ -606,7 +629,7 @@ self.port.on("todo-update",  setTodoList);
 function showError() {
     showLoad();
     Items.error.append("<h1>Sorry! Failed to Retrieve Data from IVLE API. :(</h1>");
-    Items.error.append("<p>Please check your Internet connection or change the IVLE API key in the Add-On setting page by using your own API key.</p>");
+    Items.error.append("<p>You may have encountered problems listed below: <br /> 1. Please check your Internet connection. <br /> 2. If you just logged in your IVLE webpage, please logout IVLE webpage and re-login this Add-on or restart Firefox.</p>");
 }
 self.port.on("internet-failed", showError);
 
