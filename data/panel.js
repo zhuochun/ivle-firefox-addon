@@ -227,8 +227,9 @@ function updateModules(data) {
         var FileCount = newMod.Workbins[0].BadgeTool - oldMod.Workbins[0].BadgeTool;
 
         if (AnnCount > 0) {
-            notice.Update    = true;
-            notice.AnnCount += AnnCount;
+            notice.Update         = true;
+            notice.AnnCount      += AnnCount;
+            Announcements.unread += AnnCount;
 
             Modules.update++;
 
@@ -242,6 +243,8 @@ function updateModules(data) {
                 },
                 output : "update-announcements"
             });
+        } else if (AnnCount < 0) {
+            Announcements.unread -= AnnCount;
         }
 
         if (FileCount > 0) {
@@ -250,15 +253,17 @@ function updateModules(data) {
         }
 
         // update data in oldMod
-        oldMod.Badge = newMod.Badge;
-        oldMod.BadgeAnnouncement = newMod.BadgeAnnouncement;
+        oldMod.Badge                 = newMod.Badge;
+        oldMod.BadgeAnnouncement     = newMod.BadgeAnnouncement;
         oldMod.Workbins[0].BadgeTool = newMod.Workbins[0].BadgeTool;
 
         // emit notifications
         if (notice.Update) {
             self.port.emit("send-notifications", notice);
-            self.port.emit("icon-change", notice.AnnCount);
         }
+
+        // update announcement badge
+        self.port.emit("icon-change", Announcements.unread);
     }
 }
 self.port.on("update-modules", updateModules);
@@ -415,12 +420,9 @@ function latestAnnouncements(data) {
     if (Announcements.num === Modules.num) {
         setAnnouncements(Announcements.data, Tabs.announce);
 
+        self.port.emit("icon-change", Announcements.unread);
+
         console.log("unread announcements = " + Announcements.unread);
-
-        if (Announcements.unread > 0) {
-            self.port.emit("icon-change", Announcements.unread);
-        }
-
         console.log("initialization finished");
     }
 }
@@ -465,7 +467,6 @@ function setAnnouncements(data, annTab) {
         // check this announcement is unread
         if (!ann.isRead) {
             cloneItem.addClass("ann-unread");
-            Announcements.unread++;
         }
 
         // bind click event to this announcement item
